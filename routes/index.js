@@ -15,6 +15,7 @@ router.post('/uploadfile', upload.single('uploadfile'), async function(req, res,
     console.log(Date.now());
     let results = await csv().fromFile(`./uploads/${req.file.filename}`)
     console.log(results)
+    res.send(results)
 });
 
 router.get('/login', function(req, res, next) {

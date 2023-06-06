@@ -1,27 +1,25 @@
-# Insurance
+# Insurance Project
 
 
-Things to do:
-1.) Set up AWS cloud account
+## Start up 
 
-2.) Create a data api
-	•	Download and upload csv files which are then saved to s3 (amazons file storage)
-	•	Extract csv data from files and load into mongodb
-	•	Retrieve data from existing mongoDB atlas service
+1.) Install nodejs if you dont have it [Nodejs](https://nodejs.org/en/download)
 
-3.) Create rendered pages
-	•	Pull in document from mongoDB based on a search query
-	•	Return page with required information
-	•	Style the pages
+2.) Run `npm install`
 
-4.) Set up website on AWS either using lightsail (amazons website hosting platform) or basic EC2 (ec2 is amazons virtual machine offering), including DNS
+3.) Run `npm run dev`
 
 
+## Routes
+http://localhost:3000/ => [GET, POST]
 
-Needed:
-Credit/Debit card for AWS account
-MongoDB atlas credentials 
-DNS name ( example.com (http://example.com) )
-Business logic code that runs through the csv files and creates JSON blobs 
-Guidance on what data to show,
- how it looks etc … 
+http://localhost:3000/login  [GET, POST]
+
+http://localhost:3000/logout [GET, POST]
+
+http://localhost:3000/policy [GET, POST]
+
+http://localhost:3000/policy/term/<UUID for policy> [GET]
+
+http://localhost:3000/policy/exposures/<UUID for policy>  [GET]
+
