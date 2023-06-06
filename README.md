@@ -19,7 +19,7 @@ http://localhost:3000/logout [GET, POST]
 
 http://localhost:3000/policy [GET, POST]
 
-http://localhost:3000/policy/term/`<UUID for policy>` [GET]
+http://localhost:3000/policy/term/`UUID for policy` [GET]
 
-http://localhost:3000/policy/exposures/`<UUID for policy>` [GET]
+http://localhost:3000/policy/exposures/`UUID for policy` [GET]
 
