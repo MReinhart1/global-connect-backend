@@ -24,6 +24,7 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login', function(req, res, next) {
   req.session.companyName = req.body.companyName
+  req.session.companyEmail = req.body.companyEmail
   res.send(req.session);
 });
 

@@ -13,7 +13,7 @@ const country_id_validation = [
     }),
     validate({
       validator: function(val){
-        return ["United States", "France", "Canada", "Germany"].includes(val)
+        return ["United States", "France", "Canada", "Germany", "All"].includes(val)
       },
       message: "Not a valid country",
     })

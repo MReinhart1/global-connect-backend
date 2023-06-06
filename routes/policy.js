@@ -3,6 +3,22 @@ var router = express.Router();
 const Policy = require("../schemas/policy")
 const Terms = require("../schemas/term")
 const Exposures = require("../schemas/exposure")
+const nodemailer = require("nodemailer")
+
+const transporter = nodemailer.createTransport({
+    service: "outlook",
+    auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAILPASSWORD
+    }
+})
+
+const options = {
+    from: process.env.EMAIL,
+    to: "michaelreinhart112@gmail.com",
+    subject: "Policy Upload finished",
+    text: "Great Job"
+}
 
 
 router.get('/', async function(req, res, next) {
@@ -30,6 +46,13 @@ try{
     await newExposures.save()
     await newTerms.save()
     res.send("done")
+    transporter.sendMail(options, function (err, info) {
+        if (err){
+            console.log(err)
+            return
+        }
+        console.log(info.response)
+    })
   } catch (e) {
     res.send(e);
   }
