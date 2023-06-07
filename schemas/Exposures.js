@@ -38,13 +38,17 @@ const ExposureSchema = new mongoose.Schema({
 
 });
 const ExposuresSchema = new mongoose.Schema({
-    exposures: {
+    Exposures: {
       type: [ExposureSchema],
       required: true,
     },
     policyID: {
       type: String,
       required: true
+    },
+    companyName: {
+        type: String,
+        required: true
     }
 });
 

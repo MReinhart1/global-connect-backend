@@ -1,6 +1,13 @@
 const mongoose = require("mongoose");
 const { country_id_validation } = require('./validations/policy')
 
+
+// Numbers:
+// min, max 
+// Strings:  
+// enum, match, minLength maxLength
+
+
 const PolicySchema = new mongoose.Schema({
   submission_txt: {
     type: String,
@@ -84,7 +91,8 @@ const PolicySchema = new mongoose.Schema({
     required: false,
   },
   limit_amt: {
-    type: String,
+    type: Number,
+    min: [0, "Limit amount must me more than zero"],
     required: false,
   },
   retention_id: {
@@ -169,8 +177,8 @@ const PolicySchema = new mongoose.Schema({
   },
 });
 
-const PolicysSchema = new mongoose.Schema({
-  policy: {
+const PoliciesSchema = new mongoose.Schema({
+  Policies: {
     type: [PolicySchema],
     required: false,
   },
@@ -180,4 +188,4 @@ const PolicysSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Policy", PolicysSchema);
+module.exports = mongoose.model("Policies", PoliciesSchema);

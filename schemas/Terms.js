@@ -34,13 +34,17 @@ const TermSchema = new mongoose.Schema({
 });
 
 const TermsSchema = new mongoose.Schema({
-    terms: {
+    Terms: {
       type: [TermSchema],
       required: true,
     },
     policyID: {
       type: String,
       required: true
+    },
+    companyName: {
+        type: String,
+        required: true
     }
 });
 

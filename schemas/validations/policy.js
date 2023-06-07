@@ -1,4 +1,8 @@
 var validate = require('mongoose-validator');
+const COUNTRIES = require("../constants/countries")
+
+
+// https://github.com/validatorjs/validator.js
 
 
 const country_id_validation = [
@@ -13,7 +17,7 @@ const country_id_validation = [
     }),
     validate({
       validator: function(val){
-        return ["United States", "France", "Canada", "Germany", "All"].includes(val)
+        return COUNTRIES.includes(val)
       },
       message: "Not a valid country",
     })

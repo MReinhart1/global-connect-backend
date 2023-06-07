@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+
+  <body>
+    <h1><%= companyName %></h1>
+    <h2>Policies</h2>
+    <% for (var i = 0 ; i <= Policies.length;  i++ ) { %>
+        <%=  Policies[i] %>
+        <br>
+        <br>
+        <br>
+    <% } %>
+    <h2>Terms</h2>
+    <% for (var i = 0 ; i <= Terms.length;  i++ ) { %>
+        <%=  Terms[i] %>
+        <br>
+        <br>
+        <br>
+    <% } %>
+    <h2>Exposures</h2>
+    <% for (var i = 0 ; i <= Exposures.length;  i++ ) { %>
+        <%=  Exposures[i] %>
+        <br>
+        <br>
+        <br>
+    <% } %>
+  </body>
+</html>
