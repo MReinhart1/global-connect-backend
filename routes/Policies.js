@@ -22,6 +22,9 @@ const options = {
 
 
 router.get('/', async function(req, res, next) {
+  if (!req.session.companyName){
+    req.session.companyName= "Progressive"
+  }
   let resultsPolicies = await Policies.find({companyName: req.session.companyName})
   let resultsTerms = await Terms.find({companyName: req.session.companyName})
   let resultsExposures = await Exposures.find({companyName: req.session.companyName})
