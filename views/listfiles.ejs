@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+
+  <body>
+    <h2>Files</h2>
+    <ul>
+        <% for (var i = 0 ; i < fileNames.length;  i++ ) { %>
+            <li>
+                <%=  fileNames[i]['Key'] %>
+            </li>
+        <% } %>
+    </ul>
+  </body>
+</html>

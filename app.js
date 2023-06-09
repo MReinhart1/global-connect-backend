@@ -1,26 +1,30 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const logger = require('morgan');
 require('dotenv').config()
 const mongoose = require('mongoose');
-const session = require('express-session')
 const fs = require("fs")
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport')
+const path = require('path');
 
+const {initializePassport} = require("./routes/middleware/authentication")
 
+// Express App set up
 var app = express();
-
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var policyRouter = require('./routes/Policies');
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/Policies', policyRouter);
-
-
+app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(cookieParser());
+app.use(session({
+  secret: process.env.SESSION_KEY,
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 
 
 
@@ -31,22 +35,27 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Authentication
+initializePassport(passport)
+app.use(passport.initialize())
+app.use(passport.session())
 
-app.use(session({
-  secret: process.env.SESSION_KEY,
-  resave: false,
-  saveUninitialized: false
-}));
+// Routes
+var indexRouter = require('./routes/s3Actions/index');
+var usersRouter = require('./routes/userActions/user');
+var policyRouter = require('./routes/policyActions/policies');
+app.use('/file', indexRouter);
+app.use('/auth', usersRouter);
+app.use('/policies', policyRouter);
+
 
 if (!fs.existsSync("./uploads")){
   fs.mkdirSync('./uploads');
   fs.chmod( './uploads', "0o777" )
 }
+app.get('/', function(req, res, next) {
+  res.render("index", {title: "Insurance"})
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

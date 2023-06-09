@@ -4,11 +4,15 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www"
+    "dev": "nodemon ./bin/www",
+    "prod": "nohup node ./apps/Insurance/bin/www &"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.347.1",
-    "cookie-parser": "~1.4.4",
+    "aws-sdk": "^2.1394.0",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
     "csvtojson": "^2.0.10",
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
@@ -20,7 +24,9 @@
     "mongoose-validator": "^2.1.0",
     "morgan": "~1.9.1",
     "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.3"
+    "nodemailer": "^6.9.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
