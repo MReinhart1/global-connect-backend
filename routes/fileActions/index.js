@@ -5,7 +5,8 @@ const upload = multer({ dest: 'uploads/' })
 const User = require('../../schemas/User')
 const { listFromS3, getFromS3, uploadToS3, deleteFromS3 } = require('../../cloudResources/S3')
 const { checkAuthenticated, checkNotAuthenticated } = require("../middleware/authentication")
-
+const { createJSONFromString } = require('../../csvtoJSON/index')
+const fs = require('fs')
 
 router.get('/list', checkAuthenticated, async function(req, res, next) {
   // uploadToS3 (filename, file)
@@ -31,6 +32,13 @@ router.post('/upload', checkAuthenticated, upload.single('uploadfile'), async fu
 router.get('/download/:orgname/:filename', checkAuthenticated, async function(req, res, next) {
   let results = await getFromS3(req.params.orgname+"/"+req.params.filename)
   res.send(results.Body);
+});
+
+router.get('/print/:orgname/:filename', checkAuthenticated, async function(req, res, next) {
+  let results = await getFromS3(req.params.orgname+"/"+req.params.filename)
+  let fileContents = results.Body.toString()
+  let json = await createJSONFromString(fileContents)
+  res.send(json)
 });
 
 

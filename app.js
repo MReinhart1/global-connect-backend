@@ -9,12 +9,13 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport')
 const path = require('path');
-
+var cors = require('cors');
 const {initializePassport} = require("./routes/middleware/authentication")
 
 // Express App set up
 var app = express();
 app.use(logger('dev'));
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -22,8 +23,7 @@ app.use(cookieParser());
 app.use(session({
   secret: process.env.SESSION_KEY,
   resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true }
+  saveUninitialized: true
 }));
 
 
@@ -41,10 +41,10 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // Routes
-var indexRouter = require('./routes/s3Actions/index');
+var fileRouter = require('./routes/fileActions/index');
 var usersRouter = require('./routes/userActions/user');
 var policyRouter = require('./routes/policyActions/policies');
-app.use('/file', indexRouter);
+app.use('/file', fileRouter);
 app.use('/auth', usersRouter);
 app.use('/policies', policyRouter);
 

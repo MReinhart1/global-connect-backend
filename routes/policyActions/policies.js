@@ -57,7 +57,6 @@ router.post('/', checkAuthenticated, async function(req, res, next) {
               console.log(err)
               return
           }
-          console.log(info.response)
           })
         }
       res.send("done")
