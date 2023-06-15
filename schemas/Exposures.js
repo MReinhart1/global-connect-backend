@@ -28,11 +28,11 @@ const ExposureSchema = new mongoose.Schema({
         required: false,
     },
     exposure_amt: {
-        type: String,
+        type: Number,
         required: false,
     },
     per_amt: {
-        type: String,
+        type: Number,
         required: false,
     },
 
@@ -45,10 +45,6 @@ const ExposuresSchema = new mongoose.Schema({
     policyID: {
       type: String,
       required: true
-    },
-    companyName: {
-        type: String,
-        required: true
     }
 });
 

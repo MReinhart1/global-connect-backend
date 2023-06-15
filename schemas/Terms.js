@@ -41,10 +41,6 @@ const TermsSchema = new mongoose.Schema({
     policyID: {
       type: String,
       required: true
-    },
-    companyName: {
-        type: String,
-        required: true
     }
 });
 

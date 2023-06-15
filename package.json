@@ -5,10 +5,13 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "prod": "nohup node ./apps/Insurance/bin/www &"
+    "prod": "nohup node ./apps/Insurance/bin/www &",
+    "build-css": "npx tailwindcss  public/styles/tailwind.css -o public/styles/style.css"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.347.1",
+    "@material-tailwind/html": "^2.0.0",
+    "autoprefixer": "^10.4.14",
     "aws-sdk": "^2.1394.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
@@ -27,10 +30,12 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.3",
     "passport": "^0.6.0",
-    "passport-jwt": "^4.0.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^10.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "tailwindcss": "^3.3.2"
   }
 }

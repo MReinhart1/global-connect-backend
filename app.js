@@ -16,7 +16,6 @@ const {initializePassport} = require("./routes/middleware/authentication")
 var app = express();
 app.use(logger('dev'));
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser());
@@ -34,6 +33,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Authentication
 initializePassport(passport)
@@ -41,7 +41,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // Routes
-var fileRouter = require('./routes/fileActions/index');
+var fileRouter = require('./routes/fileActions/fileActions');
 var usersRouter = require('./routes/userActions/user');
 var policyRouter = require('./routes/policyActions/policies');
 app.use('/file', fileRouter);

@@ -7,8 +7,35 @@ const { country_id_validation } = require('./validations/policy')
 // Strings:  
 // enum, match, minLength maxLength
 
+const modificationsSchema = new mongoose.Schema({
+  user: {
+    type: String
+  },
+  elementName: {
+    type: String,
+  },
+  previousValue: {
+    type: mongoose.Schema.Types.Mixed,
+  },
+  nextValue: {
+    type: mongoose.Schema.Types.Mixed,
+  },
+  date: {
+    type: Date,
+    default: new Date()
+  }
+})
 
 const PolicySchema = new mongoose.Schema({
+  status: {
+    type: String,
+    enum: ["Uploaded", "Modified", "Accepted", "Rejected"],
+    default: "Uploaded",
+    required: true
+  },
+  modifications: {
+    type: [modificationsSchema]
+  },
   submission_txt: {
     type: String,
     required: false,
@@ -63,11 +90,11 @@ const PolicySchema = new mongoose.Schema({
     required: false,
   },
   effective_dt: {
-    type: String,
+    type: Date,
     required: false,
   },
   expiration_dt: {
-    type: String,
+    type: Date,
     required: false,
   },
   underwriter_id: {
@@ -100,47 +127,47 @@ const PolicySchema = new mongoose.Schema({
     required: false,
   },
   retention_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   attach_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   share_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   gross_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   commission_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   tax_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   fee_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   surcharge_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   rilimit_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   riretention_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   riattach_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   rishare_amt: {
@@ -148,7 +175,7 @@ const PolicySchema = new mongoose.Schema({
     required: false,
   },
   ricommision_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   ripolicy_txt: {
@@ -156,7 +183,7 @@ const PolicySchema = new mongoose.Schema({
     required: false,
   },
   ripremium_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   billtype_id: {
@@ -168,11 +195,11 @@ const PolicySchema = new mongoose.Schema({
     required: false,
   },
   authority_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
   security_amt: {
-    type: String,
+    type: Number,
     required: false,
   },
 });

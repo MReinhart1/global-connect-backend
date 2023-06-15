@@ -1,7 +1,5 @@
 const LocalStrategy = require("passport-local").Strategy
-const LocalStrategy = require("passport-jwt").Strategy
-const JwtStrategy = require('passport-jwt').Strategy
-const ExtractJwt = require('passport-jwt').ExtractJwt
+
 
 const User = require("../../schemas/User")
 const bcrypt = require("bcrypt")

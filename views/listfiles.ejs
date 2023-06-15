@@ -6,12 +6,18 @@
 
   <body>
     <h2>Files</h2>
-    <ul>
+
+    <% if (fileNames) { %>
+      <ul>
         <% for (var i = 0 ; i < fileNames.length;  i++ ) { %>
             <li>
                 <%=  fileNames[i]['Key'] %>
             </li>
         <% } %>
     </ul>
+    <%} else { %>
+    <p> No Files </p>
+    <% } %>
+
   </body>
 </html>
