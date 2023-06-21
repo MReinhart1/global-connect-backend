@@ -44,4 +44,4 @@ const TermsSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Terms", TermsSchema);
+module.exports = mongoose.model("TermsSchema", TermsSchema);

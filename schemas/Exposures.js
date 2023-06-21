@@ -9,7 +9,7 @@ const ExposureSchema = new mongoose.Schema({
     },
     location_id: {
         type: String,
-        required: false,
+        required: true,
     },
     location_address: {
         type: String,
@@ -48,4 +48,4 @@ const ExposuresSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Exposures", ExposuresSchema);
+module.exports = mongoose.model("ExposuresSchema", ExposuresSchema);

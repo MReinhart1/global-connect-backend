@@ -19,11 +19,19 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  userType: {
+    type: String,
+    enum: ["Company", "Insurer"],
+    required: true
+  },
+  country: {
+    type: String,
+    required: false
+  },
   organization: {
     type: String,
     required: false
   },
-
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("UserSchema", UserSchema);

@@ -26,6 +26,15 @@ const modificationsSchema = new mongoose.Schema({
   }
 })
 
+const CommentsSchema =  new mongoose.Schema({
+  user: {
+    type: String
+  },
+  message: {
+    type: String
+  }
+})
+
 const PolicySchema = new mongoose.Schema({
   status: {
     type: String,
@@ -79,7 +88,7 @@ const PolicySchema = new mongoose.Schema({
   },
   prefix_txt: {
     type: String,
-    required: false,
+    required: false
   },
   policy_txt: {
     type: String,
@@ -202,6 +211,9 @@ const PolicySchema = new mongoose.Schema({
     type: Number,
     required: false,
   },
+  comments: {
+    type: [CommentsSchema]
+  }
 });
 
 const PoliciesSchema = new mongoose.Schema({
@@ -215,4 +227,4 @@ const PoliciesSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Policies", PoliciesSchema);
+module.exports = mongoose.model("PoliciesSchema", PoliciesSchema);

@@ -7,10 +7,9 @@ const fs = require("fs")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const passport = require('passport')
 const path = require('path');
 var cors = require('cors');
-const {initializePassport} = require("./routes/middleware/authentication")
+
 
 // Express App set up
 var app = express();
@@ -30,31 +29,24 @@ app.use(session({
 // Mongoose
 mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, 'public')));
-
-// Authentication
-initializePassport(passport)
-app.use(passport.initialize())
-app.use(passport.session())
-
 // Routes
-var fileRouter = require('./routes/fileActions/fileActions');
 var usersRouter = require('./routes/userActions/user');
-var policyRouter = require('./routes/policyActions/policies');
-app.use('/file', fileRouter);
+var policiesCreateRouter = require('./routes/policies/create');
+var policiesReadRouter = require('./routes/policies/read');
+var policiesUpdateRouter = require('./routes/policies/update');
 app.use('/auth', usersRouter);
-app.use('/policies', policyRouter);
+app.use('/policies', policiesCreateRouter);
+app.use('/policies', policiesReadRouter);
+app.use('/policies', policiesUpdateRouter);
 
 
 if (!fs.existsSync("./uploads")){
   fs.mkdirSync('./uploads');
   fs.chmod( './uploads', "0o777" )
 }
+
 app.get('/', function(req, res, next) {
-  res.render("index", {title: "Insurance"})
+  res.send("index")
 });
 
 // catch 404 and forward to error handler
@@ -67,7 +59,7 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
-  res.render('error');
+  res.status(404).send('error');
 });
 
 module.exports = app;

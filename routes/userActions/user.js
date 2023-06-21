@@ -1,61 +1,61 @@
 var express = require('express');
 var router = express.Router();
-const User = require("../../schemas/User")
-const passport = require('passport')
+const UserSchema = require("../../schemas/User")
 const bcrypt = require("bcrypt")
-const { checkAuthenticated, checkNotAuthenticated } = require("../middleware/authentication")
+const { createToken, checkAuthenticated, checkNotAuthenticated } = require("../middleware/authentication")
 
-router.get('/open', function(req, res, next) {
-  console.log(req.session)
-  res.send("This is: open")
-});
+router.get('/protected', checkAuthenticated, function(req, res) {
+  res.send("This is protected info")
+})
 
-router.get('/closed', checkAuthenticated, function(req, res, next) {
-  console.log(req.session)
-  res.send("This is: closed")
-});
-
-router.get('/register', checkNotAuthenticated, function(req, res, next) {
-  res.render('register');
-});
-
-router.post('/register', checkNotAuthenticated, async function(req, res, next) {
-  console.log(req.body)
+router.post('/register', async function(req, res, next) {
   const hashedPassword = await bcrypt.hash(req.body.password, 10)
   req.body.password = hashedPassword
-  let newUser = new User(req.body)
+  let token = await createToken({username: req.body.username, organization: req.body.organization, email: req.body.email, date: Date().now})
+  let newUser = new UserSchema(req.body)
   try {
-    let result = await newUser.save()
-    req.login(result, function(err) {
-      if (err) { return next(err); }
-      return res.redirect('/policies');
-    });
+    await newUser.save()
+    res.send({token})
   } catch (err){
     if (err.code === 11000){
-      res.send("This username or email already exists")
+      console.log("Stuck here")
+      return res.status(200).send("This username or email already exists")
     }
+    return res.send(err.message)
   }
-});
+})
 
-router.get('/login', checkNotAuthenticated, function(req, res, next) {
-  res.render('login');
-});
+router.post('/login', async function(req, res, next) {
+  if(!req.body.username || !req.body.password) return res.send("No username or password")
+  let result = await UserSchema.findOne({username: req.body.username})
+  if(result === null) {
+    console.log("No user here")
+    return res.status(200).send("No user found")
+  }
+  if (await bcrypt.compare(req.body.password, result.password)){
+    let token = await createToken({username: result.username, organization: result.organization, email: result.email, date: Date().now})
+    res.send({token})
+  } else {
+    res.status(200).send("Incorrect Password")
+  }
+})
 
-router.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-  successRedirect: '/policies',
-  failureRedirect: '/auth/login'
-}))
+router.post('/user', checkAuthenticated, async function(req, res, next) {
+  console.log(req.body)
+  if(!req.body.username) return res.send("No username")
+  let result = await UserSchema.findOne({username: req.body.username})
+  if(result === null) {
+    console.log("No user here")
+    return res.status(200).send("No user found")
+  }
+  result.password = ""
+  return res.status(200).send({result})
+})
 
-
-router.get('/logout', function(req, res, next) {
-  res.render('logout');
-});
-
-router.post('/logout', checkAuthenticated, function(req, res, next) {
-  req.logout(function(err) {
-    if (err) { return next(err); }
-    res.render('login');
-  });
-});
+router.post('/token', checkAuthenticated, async function(req, res, next) {
+  let result = await UserSchema.findOne({username: req.body.username})
+  let token = await createToken({username: result.username, organization: result.organization, email: result.email, date: Date().now})
+  return res.status(200).send({token})
+})
 
 module.exports = router;
