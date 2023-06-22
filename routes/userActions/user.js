@@ -11,10 +11,11 @@ router.get('/protected', checkAuthenticated, function(req, res) {
 router.post('/register', async function(req, res, next) {
   const hashedPassword = await bcrypt.hash(req.body.password, 10)
   req.body.password = hashedPassword
-  let token = await createToken({username: req.body.username, organization: req.body.organization, email: req.body.email, date: Date().now})
   let newUser = new UserSchema(req.body)
+  console.log(newUser)
   try {
     await newUser.save()
+    let token = await createToken({username: req.body.username, organization: req.body.organization, email: req.body.email, date: Date().now})
     res.send({token})
   } catch (err){
     if (err.code === 11000){

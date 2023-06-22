@@ -27,7 +27,9 @@ app.use(session({
 
 
 // Mongoose
-mongoose.connect(process.env.MONGO_CONNECTION_STRING);
+mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
+  autoIndex: true
+});
 
 // Routes
 var usersRouter = require('./routes/userActions/user');

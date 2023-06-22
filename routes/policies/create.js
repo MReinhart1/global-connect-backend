@@ -11,7 +11,9 @@ const { sendMail } = require('../utilities/email')
 // Create a new policy
 
 router.post('/validate', async function(req, res, next) {
-    console.log(req.body)
+    if(req.body?.Policies  === undefined){
+        return res.send("This JSON has no policies")
+    }
     let newPolicy = new PoliciesSchema({companyName: req.body.Policies[0].carrier_id, Policies: req.body.Policies})
     let newExposures = new ExposuresSchema({companyName: req.body.companyName, policyID: "example-id", Exposures: req.body.Exposures})
     let newTerms = new TermsSchema({companyName: req.body.companyName, policyID: "example-id", Terms: req.body.Terms})
