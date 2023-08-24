@@ -7,18 +7,14 @@ const { country_id_validation } = require('./validations/policy')
 // Strings:  
 // enum, match, minLength maxLength
 
+
+
 const modificationsSchema = new mongoose.Schema({
-  user: {
+  email: {
     type: String
   },
-  elementName: {
-    type: String,
-  },
-  previousValue: {
-    type: mongoose.Schema.Types.Mixed,
-  },
-  nextValue: {
-    type: mongoose.Schema.Types.Mixed,
+  updates: {
+    type: Object
   },
   date: {
     type: Date,
@@ -27,7 +23,7 @@ const modificationsSchema = new mongoose.Schema({
 })
 
 const CommentsSchema =  new mongoose.Schema({
-  user: {
+  email: {
     type: String
   },
   message: {
@@ -36,14 +32,19 @@ const CommentsSchema =  new mongoose.Schema({
 })
 
 const PolicySchema = new mongoose.Schema({
-  status: {
+  globalPolicyID: {
     type: String,
-    enum: ["Uploaded", "Modified", "Accepted", "Rejected"],
-    default: "Uploaded",
     required: true
   },
-  modifications: {
-    type: [modificationsSchema]
+  creationEmail: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    enum: ["Submission", "Quote", "Binder", "Rejected"],
+    default: "Submission",
+    required: true
   },
   submission_txt: {
     type: String,
@@ -55,6 +56,7 @@ const PolicySchema = new mongoose.Schema({
   },
   policy_id: {
     type: String,
+    enum: ["Master", "Local"],
     required: false,
   },
   country_id: {
@@ -122,20 +124,20 @@ const PolicySchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  limit_id: {
+  limit1_id: {
     type: String,
     required: false,
   },
-  limit_amt: {
+  limit1_amt: {
     type: Number,
     min: [0, "Limit amount must me more than zero"],
     required: false,
   },
-  retention_id: {
+  retention1_id: {
     type: String,
     required: false,
   },
-  retention_amt: {
+  retention1_amt: {
     type: Number,
     required: false,
   },
@@ -211,20 +213,13 @@ const PolicySchema = new mongoose.Schema({
     type: Number,
     required: false,
   },
+  modifications: {
+    type: modificationsSchema
+  },
   comments: {
     type: [CommentsSchema]
   }
 });
 
-const PoliciesSchema = new mongoose.Schema({
-  Policies: {
-    type: [PolicySchema],
-    required: false,
-  },
-  companyName: {
-    type: String,
-    required: true
-  }
-});
 
-module.exports = mongoose.model("PoliciesSchema", PoliciesSchema);
+module.exports = mongoose.model("PolicySchema", PolicySchema);

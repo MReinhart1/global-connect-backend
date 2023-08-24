@@ -14,7 +14,7 @@ async function sendMail(options){
             console.log(err)
             return
         }
-        })
+    })
 }
 
 module.exports = { sendMail }

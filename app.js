@@ -36,11 +36,13 @@ var usersRouter = require('./routes/userActions/user');
 var policiesCreateRouter = require('./routes/policies/create');
 var policiesReadRouter = require('./routes/policies/read');
 var policiesUpdateRouter = require('./routes/policies/update');
+var filesRouter = require('./routes/files/upload');
+
 app.use('/auth', usersRouter);
 app.use('/policies', policiesCreateRouter);
 app.use('/policies', policiesReadRouter);
 app.use('/policies', policiesUpdateRouter);
-
+app.use('/files', filesRouter);
 
 if (!fs.existsSync("./uploads")){
   fs.mkdirSync('./uploads');

@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
-const { username_validation, password_validation, email_validation } = require('./validations/user')
+const { password_validation, email_validation } = require('./validations/user')
 
 const UserSchema = new mongoose.Schema({
-  username: {
+  email: {
     type: String,
-    validation: username_validation,
+    validation: email_validation,
     required: true,
     unique: true
   },
@@ -13,24 +13,13 @@ const UserSchema = new mongoose.Schema({
     validation: password_validation,
     required: true
   },
-  email: {
-    type: String,
-    validation: email_validation,
-    required: true,
-    unique: true
-  },
-  userType: {
-    type: String,
-    enum: ["Company", "Insurer"],
-    required: true
-  },
   country: {
     type: String,
-    required: false
+    required: true
   },
-  organization: {
+  company: {
     type: String,
-    required: false
+    required: true
   },
 });
 

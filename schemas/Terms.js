@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { country_id_validation } = require('./validations/policy')
 
 const TermSchema = new mongoose.Schema({
+    globalPolicyID: {
+        type: String,
+        required: true
+    },
     lob_id: {
         type: String,
         required: false
@@ -33,15 +37,4 @@ const TermSchema = new mongoose.Schema({
     }
 });
 
-const TermsSchema = new mongoose.Schema({
-    Terms: {
-      type: [TermSchema],
-      required: true,
-    },
-    policyID: {
-      type: String,
-      required: true
-    }
-});
-
-module.exports = mongoose.model("TermsSchema", TermsSchema);
+module.exports = mongoose.model("TermSchema", TermSchema);

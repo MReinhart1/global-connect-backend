@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const { country_id_validation } = require('./validations/policy')
 
 const ExposureSchema = new mongoose.Schema({
+    globalPolicyID: {
+        type: String,
+        required: true
+    },
     country_id: {
         type: String,
         required: false,
@@ -37,15 +41,5 @@ const ExposureSchema = new mongoose.Schema({
     },
 
 });
-const ExposuresSchema = new mongoose.Schema({
-    Exposures: {
-      type: [ExposureSchema],
-      required: true,
-    },
-    policyID: {
-      type: String,
-      required: true
-    }
-});
 
-module.exports = mongoose.model("ExposuresSchema", ExposuresSchema);
+module.exports = mongoose.model("ExposureSchema", ExposureSchema);

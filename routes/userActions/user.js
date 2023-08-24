@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-const UserSchema = require("../../schemas/User")
+const UserSchema = require("../../schemas/user")
 const bcrypt = require("bcrypt")
-const { createToken, checkAuthenticated, checkNotAuthenticated } = require("../middleware/authentication")
+const { createToken, checkAuthenticated } = require("../middleware/authentication")
 
 router.get('/protected', checkAuthenticated, function(req, res) {
   res.send("This is protected info")
@@ -15,11 +15,10 @@ router.post('/register', async function(req, res, next) {
   console.log(newUser)
   try {
     await newUser.save()
-    let token = await createToken({username: req.body.username, organization: req.body.organization, email: req.body.email, date: Date().now})
+    let token = await createToken({ email: req.body.email, company: req.body.company, date: Date().now})
     res.send({token})
   } catch (err){
     if (err.code === 11000){
-      console.log("Stuck here")
       return res.status(200).send("This username or email already exists")
     }
     return res.send(err.message)
@@ -27,14 +26,14 @@ router.post('/register', async function(req, res, next) {
 })
 
 router.post('/login', async function(req, res, next) {
-  if(!req.body.username || !req.body.password) return res.send("No username or password")
-  let result = await UserSchema.findOne({username: req.body.username})
+  if(!req.body.email || !req.body.password) return res.send("No email or password")
+  let result = await UserSchema.findOne({email: req.body.email})
   if(result === null) {
     console.log("No user here")
     return res.status(200).send("No user found")
   }
   if (await bcrypt.compare(req.body.password, result.password)){
-    let token = await createToken({username: result.username, organization: result.organization, email: result.email, date: Date().now})
+    let token = await createToken({email: result.email, company: result.company, date: Date().now})
     res.send({token})
   } else {
     res.status(200).send("Incorrect Password")
@@ -43,8 +42,8 @@ router.post('/login', async function(req, res, next) {
 
 router.post('/user', checkAuthenticated, async function(req, res, next) {
   console.log(req.body)
-  if(!req.body.username) return res.send("No username")
-  let result = await UserSchema.findOne({username: req.body.username})
+  if(!req.body.email) return res.send("No username")
+  let result = await UserSchema.findOne({email: req.body.email})
   if(result === null) {
     console.log("No user here")
     return res.status(200).send("No user found")
@@ -54,8 +53,8 @@ router.post('/user', checkAuthenticated, async function(req, res, next) {
 })
 
 router.post('/token', checkAuthenticated, async function(req, res, next) {
-  let result = await UserSchema.findOne({username: req.body.username})
-  let token = await createToken({username: result.username, organization: result.organization, email: result.email, date: Date().now})
+  let result = await UserSchema.findOne({email: req.body.email})
+  let token = await createToken({email: result.email, company: result.company, date: Date().now})
   return res.status(200).send({token})
 })
 
