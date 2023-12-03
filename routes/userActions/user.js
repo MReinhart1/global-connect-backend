@@ -8,6 +8,11 @@ router.get('/protected', checkAuthenticated, function(req, res) {
   res.send("This is protected info")
 })
 
+// Register an org
+
+
+
+// Add the org to the request for a user that wants to register
 router.post('/register', async function(req, res, next) {
   const hashedPassword = await bcrypt.hash(req.body.password, 10)
   req.body.password = hashedPassword

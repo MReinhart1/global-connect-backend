@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const { password_validation, email_validation } = require('./validations/user')
 
 const OrganizationSchema = new mongoose.Schema({
-  country: {
+  country_id: {
     type: String,
     required: true
   },
-  city: {
+  location_id: {
     type: String,
     required: true
   },
-  company: {
+  company_id: {
     type: String,
     required: true
   },

@@ -24,13 +24,13 @@ async function getFromS3(filename){
 }
 
 async function uploadToS3 (filename, file){
-  data = fs.readFileSync(file.path)
+  data = fs.readFileSync(file)
   const putCommand = new PutObjectCommand({
     Bucket: process.env.AWS_BUCKET_NAME,
     Key: filename,
     Body: data
   })
-  fs.unlinkSync(file.path)
+  fs.unlinkSync(file)
   return Client.send(putCommand)
 }
 

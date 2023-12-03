@@ -3,11 +3,9 @@ const express = require('express');
 const logger = require('morgan');
 require('dotenv').config()
 const mongoose = require('mongoose');
-const fs = require("fs")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const path = require('path');
 var cors = require('cors');
 
 
@@ -23,8 +21,6 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }));
-
-
 
 // Mongoose
 mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
@@ -43,11 +39,6 @@ app.use('/policies', policiesCreateRouter);
 app.use('/policies', policiesReadRouter);
 app.use('/policies', policiesUpdateRouter);
 app.use('/files', filesRouter);
-
-if (!fs.existsSync("./uploads")){
-  fs.mkdirSync('./uploads');
-  fs.chmod( './uploads', "0o777" )
-}
 
 app.get('/', function(req, res, next) {
   res.send("index")
