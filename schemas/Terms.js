@@ -6,35 +6,67 @@ const TermSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    deleted: {
+        type: Boolean, 
+        default: false
+    },
     lob_id: {
-        type: String,
-        required: false
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     form_txt: {
-        type: String,
-        required: false
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     name_txt: {
-        type: String,
-        required: false
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     order_nbr: {
-        type: String,
-        required: false
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     description_txt: {
-        type: String,
-        required: false
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     schedule_txt: {
-        type: String,
-        required: false
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     country_id: {
-        type: String,
-        required: true,
-        validate: country_id_validation
+        "Value": { type: String, validate: country_id_validation },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: true }
     }
 });
 
 module.exports = mongoose.model("TermSchema", TermSchema);
+

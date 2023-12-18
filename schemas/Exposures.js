@@ -6,38 +6,74 @@ const ExposureSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    deleted: {
+        type: Boolean, 
+        default: false
+    },
     country_id: {
-        type: String,
-        required: false,
-        validate: country_id_validation
+        "Value": { type: String, validate: country_id_validation },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
+        
     },
     location_id: {
-        type: String,
-        required: true,
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: true }
     },
     location_address: {
-        type: String,
-        required: false,
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     lob_id: {
-        type: String,
-        required: false,
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     sic_id: {
-        type: String,
-        required: false,
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     basis_id: {
-        type: String,
-        required: false,
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     exposure_amt: {
-        type: Number,
-        required: false,
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
     per_amt: {
-        type: Number,
-        required: false,
+        "Value": { type: String },
+        "Hover_Description": { type: String, default: "Whats the description?" },
+        "Category": {type: String, default: "Terms" },
+        "Display_Name": { type: String, default: "Info about this value" },
+        "Editable": { type: Boolean, default: false },
+        "Required": { type: Boolean, default: false }
     },
 
 });
