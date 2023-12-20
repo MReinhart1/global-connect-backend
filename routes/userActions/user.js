@@ -20,7 +20,7 @@ router.post('/register', async function(req, res, next) {
   console.log(newUser)
   try {
     await newUser.save()
-    let token = await createToken({ email: req.body.email, company: req.body.company, date: Date().now})
+    let token = await createToken({ email: req.body.email, company: req.body.company, occupation: req.body?.occupation || "underwriter", date: Date().now})
     res.send({token})
   } catch (err){
     if (err.code === 11000){
@@ -38,7 +38,7 @@ router.post('/login', async function(req, res, next) {
     return res.status(200).send("No user found")
   }
   if (await bcrypt.compare(req.body.password, result.password)){
-    let token = await createToken({email: result.email, company: result.company, date: Date().now})
+    let token = await createToken({email: result.email, company: result.company, occupation: req.body?.occupation || "underwriter", date: Date().now})
     res.send({token})
   } else {
     res.status(200).send("Incorrect Password")
@@ -59,8 +59,9 @@ router.post('/user', checkAuthenticated, async function(req, res, next) {
 
 router.post('/token', checkAuthenticated, async function(req, res, next) {
   let result = await UserSchema.findOne({email: req.body.email})
-  let token = await createToken({email: result.email, company: result.company, date: Date().now})
+  let token = await createToken({email: result.email, company: result.company, occupation: req.body?.occupation || "underwriter", date: Date().now})
   return res.status(200).send({token})
 })
+
 
 module.exports = router;

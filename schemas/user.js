@@ -21,6 +21,12 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  occupation: {
+    type: String,
+    enum: ["Client", "Broker", "Auditor", "Underwriter", "Manager", "Administrator"],
+    default: "Underwriter",
+    required: true
+  },
 });
 
 module.exports = mongoose.model("UserSchema", UserSchema);
