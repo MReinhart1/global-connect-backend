@@ -2,8 +2,8 @@ const User = require("../../schemas/user")
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
 
-function createToken(user){
-    return jwt.sign(user, "secret")
+function createToken(user, expiration="7d"){
+    return jwt.sign(user, "secret", { expiresIn: expiration })
 }
 
 async function checkAuthenticated(req, res, next) {
@@ -15,6 +15,18 @@ async function checkAuthenticated(req, res, next) {
     next()
   })
   }
+
+async function checkAdmin(req, res, next) {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
+  let user = jwt.verify(token, "secret")
+  if (user.occupation == "Administrator"){
+    req.user = user
+    next()
+  } else {
+    return res.status(200).send("User not Authorized, must be an Administrator")
+  }
+}
   
   function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -24,4 +36,4 @@ async function checkAuthenticated(req, res, next) {
   }
 
 
-module.exports = { createToken, checkAuthenticated, checkNotAuthenticated}
+module.exports = { createToken, checkAuthenticated, checkAdmin, checkNotAuthenticated}

@@ -1,29 +1,23 @@
 const mongoose = require("mongoose");
-const { password_validation, email_validation } = require('./validations/user')
 
-const UserSchema = new mongoose.Schema({
-  firstName: {
-    type: String
-  },
-  lastName: {
-    type: String
-  },
-  email: {
+
+const InvitationSchema = new mongoose.Schema({
+  user_email: {
     type: String,
-    validation: email_validation,
     required: true,
     unique: true
   },
-  password: {
+  admin_email: {
     type: String,
-    validation: password_validation,
     required: true
   },
-  country: {
+  company_id: {
     type: String,
+    required: true,
   },
-  company: {
+  country_id: {
     type: String,
+    required: true,
   },
   occupation: {
     type: String,
@@ -37,4 +31,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("UserSchema", UserSchema);
+module.exports = mongoose.model("InvitationSchema", InvitationSchema);

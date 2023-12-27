@@ -34,13 +34,33 @@ async function createUser(numUsers){
         let newUser = new UserSchema(user)
         try {
             await newUser.save()
-            console.log(newUser + `\n\n\n Count: ${i}`)
+            logger.log("info", newUser + `\n\n\n Count: ${i}`);
         } catch (error) {}
     }
     mongoose.connection.close()
 }
 
-createUser(100)
+
+async function createAdmin(){
+    mongoose.connect(process.env.MONGO_CONNECTION_STRING, { autoIndex: true });
+        const hashedPassword = await bcrypt.hash("Passw0rd1!", 10)
+        let IvarBerkshire = {
+            email:  "IvarBoneless@berkshire.com",
+            password: hashedPassword,
+            country: "France",
+            company: "Berkshire",
+            occupation: "Administrator",
+        }
+        let newUser = new UserSchema(IvarBerkshire)
+        try {
+            await newUser.save()
+            logger.log("info", newUser + `\n\n\n Count: ${i}`);
+        } catch (error) {}
+    mongoose.connection.close()
+}
+
+createAdmin()
+// createUser(100)
 
 
 // // Data to create

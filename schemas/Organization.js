@@ -8,12 +8,18 @@ const OrganizationSchema = new mongoose.Schema({
   },
   location_id: {
     type: String,
-    required: true
+    required: false
   },
   company_id: {
     type: String,
-    required: true
+    required: true,
+  },
+  deleted: {
+    type: Boolean, 
+    default: false
   },
 });
+
+OrganizationSchema.index({country_id: 1, company_id: 1}, {unique: true})
 
 module.exports = mongoose.model("OrganizationSchema", OrganizationSchema);

@@ -64,7 +64,7 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
         }
         return res.status(200).send()
     } catch (e) {
-        console.log(e)
+        logger.log("error", `${e.message}`);
         res.send(e);
     }
 });

@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 async function sendMail(options){
     transporter.sendMail(options, function (err, info) {
         if (err){
-            console.log(err)
+            logger.log("error", `${e.message}`);
             return
         }
     })

@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const express = require('express');
-const logger = require('morgan');
+const morgan = require('morgan');
+const json = require('morgan-json');
 require('dotenv').config()
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
@@ -9,9 +10,19 @@ const session = require('express-session');
 var cors = require('cors');
 
 
+
 // Express App set up
 var app = express();
-app.use(logger('dev'));
+
+const format = json({
+  method: ':method',
+  url: ':url',
+  status: ':status',
+  length: ':res[content-length]',
+  'response-time': ':response-time ms'
+});
+
+app.use(morgan(format));
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -29,16 +40,20 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
 
 // Routes
 var usersRouter = require('./routes/userActions/user');
+var orgRouter = require('./routes/userActions/organization');
 var policiesCreateRouter = require('./routes/policies/create');
 var policiesReadRouter = require('./routes/policies/read');
 var policiesUpdateRouter = require('./routes/policies/update');
 var filesRouter = require('./routes/files/upload');
+var reportRouter = require('./routes/reports/index');
 
 app.use('/auth', usersRouter);
+app.use('/auth/org', orgRouter);
 app.use('/policies', policiesCreateRouter);
 app.use('/policies', policiesReadRouter);
 app.use('/policies', policiesUpdateRouter);
 app.use('/files', filesRouter);
+app.use('/report', reportRouter);
 
 app.get('/', function(req, res, next) {
   res.send("index")
@@ -48,6 +63,7 @@ app.get('/', function(req, res, next) {
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {
