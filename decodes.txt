@@ -1,0 +1,8 @@
+JSON Code-Decoding Below:
+
+Status Codes:
+0=WIP
+1=Submission
+2=Quote
+3=Bind
+
