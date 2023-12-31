@@ -306,9 +306,27 @@ const PolicySchema = new mongoose.Schema({
     "Editable": { type: Boolean, default: true },
     "Required": { type: Boolean, default: false },
   },
-  "ripolicy_txt": {
+  "trigger_id": {
     "Value": { type: String },
     "Sort_Order": { type: String, default: "31" },
+    "Display_Name": { type: String, default: "Loss Trigger" },
+    "Hover_Description": { type: String, default: "Loss trigger for claims (e.g. Occurence, Claims-Made, etc.)" },
+    "Category": { type: String, default: "Gross Declarations"},
+    "Editable": { type: Boolean, default: true },
+    "Required": { type: Boolean, default: true },
+  },
+  "retro_dt": {
+    "Value": { type: Date },
+    "Sort_Order": { type: String, default: "32" },
+    "Display_Name": { type: String, default: "Retro Date" },
+    "Hover_Description": { type: String, default: "Policy retroactive date (applicable for claims-made policies)" },
+    "Category": { type: String, default: "Gross Declarations"},
+    "Editable": { type: Boolean, default: true },
+    "Required": { type: Boolean, default: false },
+  },
+  "ripolicy_txt": {
+    "Value": { type: String },
+    "Sort_Order": { type: String, default: "33" },
     "Display_Name": { type: String, default: "Certificate #" },
     "Hover_Description": { type: String, default: "Reinsurance policy number" },
     "Category": { type: String, default: "Reinsurance Declarations"},
@@ -317,7 +335,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "ripremium_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "32" },
+    "Sort_Order": { type: String, default: "34" },
     "Display_Name": { type: String, default: "RI Premium" },
     "Hover_Description": { type: String, default: "Reinsurance premium" },
     "Category": { type: String, default: "Reinsurance Declarations"},
@@ -326,7 +344,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "ricommision_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "33" },
+    "Sort_Order": { type: String, default: "35" },
     "Display_Name": { type: String, default: "RI Commission" },
     "Hover_Description": { type: String, default: "Reinsurance cede commission" },
     "Category": { type: String, default: "Reinsurance Declarations"},
@@ -335,7 +353,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "riattach_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "34" },
+    "Sort_Order": { type: String, default: "36" },
     "Display_Name": { type: String, default: "RI Attachment" },
     "Hover_Description": { type: String, default: "Reinsurance attachment point if excess" },
     "Category": { type: String, default: "Reinsurance Declarations"},
@@ -344,7 +362,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "rilimit_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "35" },
+    "Sort_Order": { type: String, default: "37" },
     "Display_Name": { type: String, default: "RI Limit" },
     "Hover_Description": { type: String, default: "Amount of reinsurance coverage" },
     "Category": { type: String, default: "Reinsurance Declarations"},
@@ -353,7 +371,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "riretention_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "36" },
+    "Sort_Order": { type: String, default: "38" },
     "Display_Name": { type: String, default: "RI Retention" },
     "Hover_Description": { type: String, default: "null" },
     "Category": { type: String, default: "Reinsurance Declarations"},
@@ -362,16 +380,34 @@ const PolicySchema = new mongoose.Schema({
   },
   "rishare_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "37" },
+    "Sort_Order": { type: String, default: "39" },
     "Display_Name": { type: String, default: "RI Share" },
     "Hover_Description": { type: String, default: "Reinsurer share (1-100%)" },
     "Category": { type: String, default: "Reinsurance Declarations"},
     "Editable": { type: Boolean, default: true },
     "Required": { type: Boolean, default: false },
   },
+  "ritrigger_id": {
+    "Value": { type: String },
+    "Sort_Order": { type: String, default: "40" },
+    "Display_Name": { type: String, default: "Reinsurance Loss Trigger" },
+    "Hover_Description": { type: String, default: "Reinsurance loss trigger for claims (e.g. Occurence, Claims-Made, etc.)" },
+    "Category": { type: String, default: "Reinsurance Declarations"},
+    "Editable": { type: Boolean, default: true },
+    "Required": { type: Boolean, default: true },
+  },
+  "riretro_dt": {
+    "Value": { type: Date },
+    "Sort_Order": { type: String, default: "41" },
+    "Display_Name": { type: String, default: "Reinsurance Retro Date" },
+    "Hover_Description": { type: String, default: "Certificate retroactive date (applicable for claims-made policies)" },
+    "Category": { type: String, default: "Reinsurance Declarations"},
+    "Editable": { type: Boolean, default: true },
+    "Required": { type: Boolean, default: false },
+  },
   "security_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "38" },
+    "Sort_Order": { type: String, default: "42" },
     "Display_Name": { type: String, default: "Security" },
     "Hover_Description": { type: String, default: "Amount of collateral requested" },
     "Category": { type: String, default: "Reinsurance Declarations"},
@@ -380,7 +416,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "tpa_id": {
     "Value": { type: String },
-    "Sort_Order": { type: String, default: "39" },
+    "Sort_Order": { type: String, default: "43" },
     "Display_Name": { type: String, default: "Claims" },
     "Hover_Description": { type: String, default: "Handling protocol (e.g. insurer, tpa, etc.)" },
     "Category": { type: String, default: "Other"},
@@ -389,7 +425,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "authority_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "40" },
+    "Sort_Order": { type: String, default: "44" },
     "Display_Name": { type: String, default: "Authority Amount" },
     "Hover_Description": { type: String, default: "Claims handling settlement authority amount" },
     "Category": { type: String, default: "Other"},
@@ -398,7 +434,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "billtype_id": {
     "Value": { type: String },
-    "Sort_Order": { type: String, default: "41" },
+    "Sort_Order": { type: String, default: "45" },
     "Display_Name": { type: String, default: "Bill Type" },
     "Hover_Description": { type: String, default: "Local Broker Bill, Central Bill, Direct Bill" },
     "Category": { type: String, default: "Other"},
@@ -407,7 +443,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "roe_dt": {
     "Value": { type: Date },
-    "Sort_Order": { type: String, default: "42" },
+    "Sort_Order": { type: String, default: "46" },
     "Display_Name": { type: String, default: "FX Date" },
     "Hover_Description": { type: String, default: "Rate of Exchange Date" },
     "Category": { type: String, default: "Other"},
@@ -416,7 +452,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "location_id": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "43" },
+    "Sort_Order": { type: String, default: "47" },
     "Display_Name": { type: String, default: "Location #" },
     "Hover_Description": { type: String, default: "null" },
     "Category": { type: String, default: "Exposures"},
@@ -425,7 +461,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "location_address": {
     "Value": { type: String },
-    "Sort_Order": { type: String, default: "44" },
+    "Sort_Order": { type: String, default: "48" },
     "Display_Name": { type: String, default: "Location Address" },
     "Hover_Description": { type: String, default: "null" },
     "Category": { type: String, default: "Exposures"},
@@ -434,7 +470,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "sic_id": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "45" },
+    "Sort_Order": { type: String, default: "49" },
     "Display_Name": { type: String, default: "SIC" },
     "Hover_Description": { type: String, default: "null" },
     "Category": { type: String, default: "Exposures"},
@@ -443,7 +479,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "basis_id": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "46" },
+    "Sort_Order": { type: String, default: "50" },
     "Display_Name": { type: String, default: "Exposure Basis Type" },
     "Hover_Description": { type: String, default: "Classification/type of exposure used" },
     "Category": { type: String, default: "Exposures"},
@@ -452,7 +488,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "exposure_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "47" },
+    "Sort_Order": { type: String, default: "51" },
     "Display_Name": { type: String, default: "Exposure Amount" },
     "Hover_Description": { type: String, default: "Amount of exposure basis" },
     "Category": { type: String, default: "Exposures"},
@@ -461,7 +497,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "per_amt": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "48" },
+    "Sort_Order": { type: String, default: "52" },
     "Display_Name": { type: String, default: "Per" },
     "Hover_Description": { type: String, default: "Rate of exposure basis used (i.e. per 1, per 100, per 1000, etc.)" },
     "Category": { type: String, default: "Exposures"},
@@ -470,7 +506,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "order_nbr": {
     "Value": { type: Number },
-    "Sort_Order": { type: String, default: "49" },
+    "Sort_Order": { type: String, default: "53" },
     "Display_Name": { type: String, default: "Order" },
     "Hover_Description": { type: String, default: "Order of forms/endorsements" },
     "Category": { type: String, default: "Terms"},
@@ -479,7 +515,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "form_txt": {
     "Value": { type: String },
-    "Sort_Order": { type: String, default: "50" },
+    "Sort_Order": { type: String, default: "54" },
     "Display_Name": { type: String, default: "Form#" },
     "Hover_Description": { type: String, default: "Local company form id number" },
     "Category": { type: String, default: "Terms"},
@@ -488,7 +524,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "name_txt": {
     "Value": { type: String },
-    "Sort_Order": { type: String, default: "51" },
+    "Sort_Order": { type: String, default: "55" },
     "Display_Name": { type: String, default: "Form Name" },
     "Hover_Description": { type: String, default: "Title of form/endorsement" },
     "Category": { type: String, default: "Terms"},
@@ -497,7 +533,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "description_txt": {
     "Value": { type: String },
-    "Sort_Order": { type: String, default: "52" },
+    "Sort_Order": { type: String, default: "56" },
     "Display_Name": { type: String, default: "Form Description" },
     "Hover_Description": { type: String, default: "Description of form coverage, limitation, exclusion, etc." },
     "Category": { type: String, default: "Terms"},
@@ -506,7 +542,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "schedule_txt": {
     "Value": { type: String },
-    "Sort_Order": { type: String, default: "53" },
+    "Sort_Order": { type: String, default: "57" },
     "Display_Name": { type: String, default: "Schedule" },
     "Hover_Description": { type: String, default: "Variable data to be included in form schedule" },
     "Category": { type: String, default: "Terms"},
