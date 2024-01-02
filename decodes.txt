@@ -1,0 +1,63 @@
+JSON Code-Decoding Below:
+
+Status Codes:
+0=WIP
+1=Submission
+2=Quote
+3=Bind
+4=Post Bind
+
+  "status": 0 
+  "submission_txt": 0 
+  "insured_name": 0
+  "insured_address": 2
+  "riskmanager_id": 3
+  "effective_dt": 0
+  "expiration_dt": 0
+  "country_id": 0
+  "carrier_id": 0
+  "carrier_address": 2 (should be able to pull from our user table when carrier/country is selected)
+  "broker_id": 2
+  "broker_address": 2
+  "producer_id": 4
+  "policy_id": ?
+  "prefix_txt": 3
+  "policy_txt": 3
+  "suffix_txt": 3
+  "underwriter_id": 1 (should be able to pull from our user table when carrier/country is selected)
+  "lob_id": 0
+  "product_txt": 0
+  "gross_amt": 2
+  "commission_amt": 2
+  "tax_amt": 4
+  "fee_amt": 4
+  "surcharge_amt": 4
+  "limit1_id": 0
+  "limit1_amt": 0
+  "retention1_id": 0
+  "retention1_amt": 0
+  "attach_amt": 0
+  "share_amt": 0
+  "ripolicy_txt": 3
+  "ripremium_amt": 1
+  "ricommision_amt": 1
+  "riattach_amt": 1
+  "rilimit_amt": 1
+  "riretention_amt": 1
+  "rishare_amt": 1
+  "security_amt": 2
+  "tpa_id": 2
+  "authority_amt": 2
+  "billtype_id": 3
+  "roe_dt": 3
+  "location_id": 1
+  "location_address": 1
+  "sic_id": 1
+  "basis_id": 1
+  "exposure_amt": 1
+  "per_amt": ?
+  "order_nbr": 1
+  "form_txt": 1
+  "name_txt": 1
+  "description_txt": 1
+  "schedule_txt": 1
