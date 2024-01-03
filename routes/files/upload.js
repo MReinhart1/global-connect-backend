@@ -21,8 +21,6 @@ var storage = multer.diskStorage(
 
 const upload = multer({ dest: "./", storage: storage })
 
-
-
 router.post(`/read`,  checkAuthenticated, async function(req, res, next) {
     try {
         let allDocuments = await PolicyFilesSchema.find({policy_id: req.body.policy_id})
@@ -54,7 +52,8 @@ router.post(`/upload`,  checkAuthenticated, upload.single('letter'), async funct
             logger.log("info", 'A document is being uploaded');
             await Promise.all([
                 uploadToS3(`${req.user.company}/${req.user.country}/${currentDate}.pdf`, `${currentDate}.pdf`, tags),
-                newFile.save() ])
+                newFile.save() 
+            ])
         } else {
             return res.send(validation.message)
         }
@@ -86,8 +85,14 @@ router.get(`/download`,  checkAuthenticated, async function(req, res, next) {
         res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
         return res.send(file.Body)
     } catch (error) {
-        logger.log("error", error)
-        return res.send("Unexpected Error")
+        if (error.code == "NoSuchKey"){
+            logger.log("error", error)
+            return res.send(`File does not exist`)
+
+        } else {
+            logger.log("error", error)
+            return res.send(`Unexpected Error: ${error.message}`)
+        }
     }
 });
 

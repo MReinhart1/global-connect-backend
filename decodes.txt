@@ -38,6 +38,10 @@ Status Codes:
   "retention1_amt": 0
   "attach_amt": 0
   "share_amt": 0
+
+TRIGGER_ID 404
+retro_dt 404
+
   "ripolicy_txt": 3
   "ripremium_amt": 1
   "ricommision_amt": 1
@@ -45,6 +49,11 @@ Status Codes:
   "rilimit_amt": 1
   "riretention_amt": 1
   "rishare_amt": 1
+
+ritrigger_id 404
+riretro_dt 404
+
+
   "security_amt": 2
   "tpa_id": 2
   "authority_amt": 2

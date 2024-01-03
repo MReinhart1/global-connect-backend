@@ -1,4 +1,5 @@
 const nodemailer = require("nodemailer")
+const { logger } = require("../../logger")
 
 const transporter = nodemailer.createTransport({
     service: "outlook",
@@ -9,9 +10,9 @@ const transporter = nodemailer.createTransport({
 })
 
 async function sendMail(options){
-    transporter.sendMail(options, function (err, info) {
-        if (err){
-            logger.log("error", `${e.message}`);
+    transporter.sendMail(options, function (error, info) {
+        if (error){
+            logger.log("error", `${error.message}`);
             return
         }
     })

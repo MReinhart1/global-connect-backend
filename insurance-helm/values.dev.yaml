@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  repository: insurance
+  pullPolicy: Always
+  tag: "latest"
+
+name: global-connect
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+ENV:
+  PORT: 3000
+  MAILENABLED: true
+  AWS_BUCKET_NAME: insurance-112
+
+SECRETS:
+  MONGO_CONNECTION_STRING: ""
+  SESSION_KEY: ""
+  EMAIL: ""
+  EMAILPASSWORD: ""

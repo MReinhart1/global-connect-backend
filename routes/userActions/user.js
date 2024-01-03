@@ -51,10 +51,22 @@ router.post('/login', async function(req, res, next) {
         occupation: result.occupation
       }
       let token = await createToken({ ...result, date: Date().now})
-      return res.send({token})
+      res.cookie("token", token)
+      return res.status(200).send("Logged In")
     } else {
       return res.status(200).send("Incorrect Password")
     }
+  } catch (error) {
+    logger.log("error", error)
+    return res.send("Unexpected Error")
+  }
+})
+
+router.get('/logout', async function(req, res, next) {
+  try {
+    logger.log("info", `A user is logged out`);
+    res.clearCookie("token");
+    return res.status(200).send("Logged out")
   } catch (error) {
     logger.log("error", error)
     return res.send("Unexpected Error")

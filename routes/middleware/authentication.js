@@ -7,8 +7,10 @@ function createToken(user, expiration="7d"){
 }
 
 async function checkAuthenticated(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+  if(!req.cookies.token){
+    return res.status(200).send("Must login first")
+  }
+  const token = req.cookies.token
   jwt.verify(token, "secret", (err, user) => {
     if (err) return res.status(200).send("User not Authenticated")
     req.user = user
@@ -17,8 +19,10 @@ async function checkAuthenticated(req, res, next) {
   }
 
 async function checkAdmin(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+  if(!req.cookies.token){
+    return res.status(200).send("Must login first")
+  }
+  const token = req.cookies.token
   let user = jwt.verify(token, "secret")
   if (user.occupation == "Administrator"){
     req.user = user

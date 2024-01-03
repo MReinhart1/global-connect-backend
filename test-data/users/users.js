@@ -44,16 +44,14 @@ async function createUser(numUsers){
 async function createAdmin(){
     mongoose.connect(process.env.MONGO_CONNECTION_STRING, { autoIndex: true });
         const hashedPassword = await bcrypt.hash("Passw0rd1!", 10)
-        let IvarBerkshire = {
-            email:  "IvarBoneless@berkshire.com",
-            password: hashedPassword,
-            country: "France",
-            company: "Berkshire",
-            occupation: "Administrator",
-        }
-        let newUser = new UserSchema(IvarBerkshire)
         try {
-            await newUser.save()
+            await UserSchema.create({
+                email:  "michaelreinhart112@gmail.com",
+                password: hashedPassword,
+                country: "France",
+                company: "Berkshire",
+                occupation: "Administrator",
+            })
             logger.log("info", newUser + `\n\n\n Count: ${i}`);
         } catch (error) {}
     mongoose.connection.close()

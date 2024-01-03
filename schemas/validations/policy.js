@@ -19,7 +19,7 @@ const country_id_validation = [
       validator: function(val){
         return COUNTRIES.includes(val)
       },
-      message: "Not a valid country",
+      message: "{VALUE} is not a valid country",
     })
 ];
 

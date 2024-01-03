@@ -84,8 +84,12 @@ router.post('/acceptinvite/:inviteId', async function(req, res, next) {
     await InvitationSchema.findByIdAndUpdate({_id: req.params.inviteId}, {deleted: "true"})
     return res.send({token})
   } catch (error) {
-    logger.log("error", error)
-    return res.send("Unexpected Error")
+    if (error.code === 11000){
+      return res.send(`User has already been accepted`)
+    } else {
+      logger.log("error", error)
+      return res.send(err.message)
+    }
   }
 })
 
@@ -96,8 +100,12 @@ router.get('/acceptinvite/:inviteId', async function(req, res, next) {
     logger.log("info", `User with Id: ${req.params.inviteId} is being searched for`)
     return res.send(user)
   } catch (error) {
-    logger.log("error", error)
-    return res.send("Unexpected Error")
+    if (error.code === 11000){
+      return res.send(`User has already been accepted`)
+    } else {
+      logger.log("error", error)
+      return res.send(err.message)
+    }
   }
 })
 

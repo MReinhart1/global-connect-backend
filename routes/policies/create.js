@@ -8,6 +8,7 @@ const { getFromS3 } = require('../../cloudResources/S3')
 const { checkAuthenticated, checkNotAuthenticated } = require("../middleware/authentication");
 const { sendMail } = require('../utilities/email')
 const jwt = require('jsonwebtoken')
+const { logger } = require("../../logger")
 
 
 async function sendEmail(element){
@@ -26,6 +27,7 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
     try{
         let token = jwt.verify(req.headers.authorization.split("Bearer ")[1], "secret")
         let uuid = Math.floor(Math.random() * 1000000000) + "" + Date.now()
+        let PolicyList = []
         for(let policyIndex = 0; policyIndex < req.body.Policies.length; policyIndex++){
             let newPolicy = new PolicySchema()
             let allKeys = Object.keys(req.body.Policies[policyIndex])
@@ -34,6 +36,7 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
             });
             newPolicy['globalPolicyID'] = uuid
             newPolicy['creationEmail'] = token.email
+            newPolicy['status'] = "Bind"
 
             // Terms
             for(let termsIndex = 0; termsIndex < req.body.Terms.length; termsIndex++){
@@ -58,38 +61,33 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
                     newPolicy.Exposures.push(exposureElement)
                 }
             }
-
-            newPolicy.save()
+            PolicyList.push(newPolicy)
             sendEmail(req.body.Policies[policyIndex])
         }
-        return res.status(200).send()
+        let errorList = await ValidatePolicyList(PolicyList)
+        if (errorList.length == 0){
+            PolicySchema.create(PolicyList)
+        } else {
+            return res.status(200).send(errorList)
+        }
+        return res.status(200).send("Policy Uploaded")
     } catch (e) {
         logger.log("error", `${e.message}`);
         res.send(e);
     }
 });
 
-router.post('/validate', checkAuthenticated, async function(req, res, next) {
-    if(req.body?.Policies  === undefined){
-        return res.send("This JSON has no policies")
-    }
-    let errors = []
-    let uuid = Math.floor(Math.random() * 1000000000) + "" + Date.now()
 
-    for(let i = 0; i < req.body.Policies.length; i++){
-        let newPolicy = new PolicySchema()
-        let allKeys = Object.keys(req.body.Policies[i])
-        allKeys.forEach(function(value) {
-            newPolicy[value] = {...newPolicy[value], Value: req.body.Policies[i][value] }
-        });
-        newPolicy['globalPolicyID'] = uuid
+async function ValidatePolicyList(PolicyList){
+    let errorList = []
+    for(let element = 0; element < PolicyList.length; element++){
         try {
-            await newPolicy.validate()
-        } catch (err){
-            errors.push(err.errors)
+            await PolicyList[element].validate()
+        } catch (error){
+            errorList.push(error.message)
         }
     }
-    res.send({errors})
-})
+    return errorList
+}
 
 module.exports = router;
