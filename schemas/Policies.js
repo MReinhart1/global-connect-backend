@@ -26,10 +26,15 @@ const PolicySchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  "status": {
+  "status_name": {
     type: String,
     enum: ["WIP", "Submission", "Quote", "Bind", "Post Bind", "Rejected"],
-    default: "Submission",
+    default: "WIP",
+    required: true
+  },
+  "status_code": {
+    type: Number,
+    default: 0,
     required: true
   },
   "deleted": {
@@ -37,7 +42,7 @@ const PolicySchema = new mongoose.Schema({
     default: false
   },
   "submission_txt": {
-    "Value": { type: String, required: true },
+    "Value": { type: String, required: [true, "submission_txt is required"]},
     "Sort_Order": { type: String, default: "1" },
     "Display_Name": { type: String, default: "Submission Id" },
     "Hover_Description": { type: String, default: "Local system's submission id" },
@@ -47,7 +52,7 @@ const PolicySchema = new mongoose.Schema({
     "Comments" : { type: [CommentsSchema] },
   },
   "insured_name": {
-    "Value": { type: String, required: true },
+    "Value": { type: String, required: [true, "insured_name is required"]},
     "Sort_Order": { type: String, default: "2" },
     "Display_Name": { type: String, default: "Named Insured" },
     "Hover_Description": { type: String, default: "First named insured to appear on policy" },
@@ -58,7 +63,7 @@ const PolicySchema = new mongoose.Schema({
   },
   "insured_address": {
     "Value": { type: String, required: function(){
-      return this.status == "Quote"
+      return [this.status_code >= 2, "The insured_address is required for the Quote Stage"]
     }},
     "Sort_Order": { type: String, default: "3" },
     "Display_Name": { type: String, default: "First named insured's mailing address" },
@@ -81,7 +86,7 @@ const PolicySchema = new mongoose.Schema({
     "Comments" : { type: [CommentsSchema] },
   },
   "effective_dt": {
-    "Value": { type: Date, required: true },
+    "Value": { type: Date, required: [true, "effective_dt is required"]},
     "Sort_Order": { type: String, default: "5" },
     "Display_Name": { type: String, default: "Effective Date" },
     "Hover_Description": { type: String, default: "Inception date of policy" },
@@ -537,9 +542,9 @@ const PolicySchema = new mongoose.Schema({
     "Comments" : { type: [CommentsSchema] },
   },
   "roe_dt": {
-    "Value": { type: Date, required: function(){
+    "Value": { type: Date, required: [function(){
       return this.status == "Bind"
-    }},
+    }, "the roe is requrred"]},
     "Sort_Order": { type: String, default: "46" },
     "Display_Name": { type: String, default: "FX Date" },
     "Hover_Description": { type: String, default: "Rate of Exchange Date" },
@@ -689,5 +694,21 @@ const PolicySchema = new mongoose.Schema({
   }
 });
 
+
+PolicySchema.pre('*', async function() {
+  if ( this.status_name == "WIP"){
+    this.status_code = 0
+  } else if (this.status_name == "Submission"){
+    this.status_code = 10
+  } else if (this.status_name == "Quote"){
+    this.status_code = 20
+  } else if (this.status_name == "Bind"){
+    this.status_code = 30
+  } else if (this.status_name == "Post Bind"){
+    this.status_code = 40
+  } else if (this.status_name == "Rejected"){
+    this.status_code = 500
+  } else {throw new Error("This status does not exist")}
+});
 
 module.exports = mongoose.model("PolicySchema", PolicySchema);

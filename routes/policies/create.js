@@ -36,7 +36,6 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
             });
             newPolicy['globalPolicyID'] = uuid
             newPolicy['creationEmail'] = token.email
-            newPolicy['status'] = "Bind"
 
             // Terms
             for(let termsIndex = 0; termsIndex < req.body.Terms.length; termsIndex++){
@@ -84,6 +83,19 @@ async function ValidatePolicyList(PolicyList){
         try {
             await PolicyList[element].validate()
         } catch (error){
+            console.log(`=======================================  ${PolicyList[element].country_id.Value} -  ${PolicyList[element].policy_id.Value} ===================================================`)
+            console.log(Object.keys(error.errors))
+            for (let index = 0; index < Object.keys(error.errors).length; index++){
+                // console.log(error.errors[Object.keys(error.errors)[index]])
+                console.log(error.errors[Object.keys(error.errors)[index]].properties.message)
+                console.log(error.errors[Object.keys(error.errors)[index]].properties.path.split(".Value")[0])
+                if ( error.errors[Object.keys(error.errors)[index]].properties.value == "" ){
+                    console.log("No Value")
+                } else {
+                    console.log(error.errors[Object.keys(error.errors)[index]].properties.value)
+                }
+            }
+            console.log("==========================================================================================")
             errorList.push(error.message)
         }
     }

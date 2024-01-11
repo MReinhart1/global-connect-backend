@@ -16,7 +16,7 @@ async function checkAuthenticated(req, res, next) {
     req.user = user
     next()
   })
-  }
+}
 
 async function checkAdmin(req, res, next) {
   if(!req.cookies.token){
@@ -37,7 +37,7 @@ async function checkAdmin(req, res, next) {
       return res.redirect('/')
     }
     next()
-  }
+}
 
 
 module.exports = { createToken, checkAuthenticated, checkAdmin, checkNotAuthenticated}

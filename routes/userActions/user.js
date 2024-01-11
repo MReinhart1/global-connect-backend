@@ -41,7 +41,7 @@ router.post('/login', async function(req, res, next) {
     let result = await UserSchema.findOne({email: req.body.email})
     if(result === null) {
       logger.log("info", 'User does not exist');
-      return res.status(200).send("No user found")
+      return res.status(404).send("No user found")
     }
     if (await bcrypt.compare(req.body.password, result.password)){
       result = {
@@ -54,7 +54,7 @@ router.post('/login', async function(req, res, next) {
       res.cookie("token", token)
       return res.status(200).send("Logged In")
     } else {
-      return res.status(200).send("Incorrect Password")
+      return res.status(401).send("Incorrect Password")
     }
   } catch (error) {
     logger.log("error", error)
