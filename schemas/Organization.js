@@ -18,7 +18,10 @@ const OrganizationSchema = new mongoose.Schema({
     type: Boolean, 
     default: false
   },
-});
+  inbox: {
+    type: String
+  },
+}, { timestamps: true });
 
 OrganizationSchema.index({country_id: 1, company_id: 1}, {unique: true})
 

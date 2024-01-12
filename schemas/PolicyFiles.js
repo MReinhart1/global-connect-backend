@@ -3,8 +3,7 @@ const { password_validation, email_validation } = require('./validations/user')
 
 const PolicyFilesSchema = new mongoose.Schema({
   date: {
-    type: Date,
-    default: Date.now
+    type: Date
   },
   country: {
     type: String,
@@ -51,7 +50,7 @@ const PolicyFilesSchema = new mongoose.Schema({
     type: Boolean, 
     default: false
   },
-});
+}, { timestamps: true });
 
 PolicyFilesSchema.index({globalPolicyID: 1})
 PolicyFilesSchema.index({policy_id: 1})

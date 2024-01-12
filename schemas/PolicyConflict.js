@@ -1,34 +1,47 @@
 const mongoose = require("mongoose");
 
+
+const CommentsSchema =  new mongoose.Schema({
+  email: {
+    type: String
+  },
+  message: {
+    type: String
+  },
+  localUnderwriter: {
+    type: Boolean
+  },
+}, { timestamps: true })
+
+const ChangesSchema = new mongoose.Schema({
+  policyElementName: { type: String },
+  previousValue: { type: mongoose.Schema.Types.Mixed },
+  currentValue: { type: mongoose.Schema.Types.Mixed },
+  comments: [CommentsSchema]
+})
+
 const PolicyConflict = new mongoose.Schema({
   globalPolicyID: {
     type: String,
     required: true
   },
-  policy_id: {
+  policyID: {
     type: String,
     required: true
   },
+  accepted: {
+    type: Boolean
+  },
+  company_id: {type: String},
+  country_id: {type: String},
+  email: {
+    type: email
+  },
+  changes: [ChangesSchema],
   deleted: {
     type: Boolean,
     default: false
   },
-  element: {
-    name: { type: String },
-    NewValue: { type: String }
-  },
-  company_id: {
-    type: String,
-    required: true
-  },
-  userEmail: {
-    type: String,
-    required: true
-  },
-  updated: {
-    type: Date,
-    default: Date.now
-  }
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("PolicyConflict", PolicyConflict);

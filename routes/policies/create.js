@@ -10,7 +10,6 @@ const { sendMail } = require('../utilities/email')
 const jwt = require('jsonwebtoken')
 const { logger } = require("../../logger")
 
-
 async function sendEmail(element){
     let emailUser = await User.findOne({"country": element.country_id})
     if (process.env.MAILENABLED == 'true'){
@@ -36,6 +35,7 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
             });
             newPolicy['globalPolicyID'] = uuid
             newPolicy['creationEmail'] = token.email
+            newPolicy['status_name'] = "Post Bind"
 
             // Terms
             for(let termsIndex = 0; termsIndex < req.body.Terms.length; termsIndex++){
@@ -76,27 +76,15 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
     }
 });
 
-
 async function ValidatePolicyList(PolicyList){
     let errorList = []
     for(let element = 0; element < PolicyList.length; element++){
         try {
             await PolicyList[element].validate()
         } catch (error){
-            console.log(`=======================================  ${PolicyList[element].country_id.Value} -  ${PolicyList[element].policy_id.Value} ===================================================`)
-            console.log(Object.keys(error.errors))
             for (let index = 0; index < Object.keys(error.errors).length; index++){
-                // console.log(error.errors[Object.keys(error.errors)[index]])
-                console.log(error.errors[Object.keys(error.errors)[index]].properties.message)
-                console.log(error.errors[Object.keys(error.errors)[index]].properties.path.split(".Value")[0])
-                if ( error.errors[Object.keys(error.errors)[index]].properties.value == "" ){
-                    console.log("No Value")
-                } else {
-                    console.log(error.errors[Object.keys(error.errors)[index]].properties.value)
-                }
-            }
-            console.log("==========================================================================================")
-            errorList.push(error.message)
+            errorList.push(error.errors[Object.keys(error.errors)[index]].properties.message)
+            }           
         }
     }
     return errorList

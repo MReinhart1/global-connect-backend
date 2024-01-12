@@ -25,6 +25,8 @@ lib-cov
 coverage
 *.lcov
 
+MongooseSchema.js
+
 .DS_Store
 
 # nyc test coverage

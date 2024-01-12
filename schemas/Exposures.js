@@ -75,7 +75,6 @@ const ExposureSchema = new mongoose.Schema({
         "Editable": { type: Boolean, default: false },
         "Required": { type: Boolean, default: false }
     },
-
 });
 
 module.exports = mongoose.model("ExposureSchema", ExposureSchema);

@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema({
   company: {
     type: String,
   },
+  // timestamps: true,
   occupation: {
     type: String,
     enum: ["Client", "Broker", "Auditor", "Underwriter", "Manager", "Administrator"],
@@ -35,6 +36,6 @@ const UserSchema = new mongoose.Schema({
     type: Boolean, 
     default: false
   },
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model("UserSchema", UserSchema);
