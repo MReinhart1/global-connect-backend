@@ -5,6 +5,7 @@ await UserSchema.create({
     company: "Berkshire",
     occupation: "Administrator",
 })
+// This is a comment
 await UserSchema.create({
     email:  "michaelreinhart112@gmail.com",
     password: hashedPassword,
