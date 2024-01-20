@@ -35,23 +35,23 @@ router.post(`/upload`,  checkAuthenticated, upload.single('letter'), async funct
     try {
         let file = {
             date: req.body.date,
-            country: req.user.country,
-            company: req.user.company,
+            country_id: req.user.country_id,
+            company_id: req.user.company_id,
             email: req.user.email,
             policy_id: req.body.policy_id,
             effective_dt: req.body.effective_dt,
             action: req.body.action,
             value: req.body.value,
             globalPolicyID: req.body.globalPolicyID,
-            S3FilePath: `${req.user.company}/${req.user.country}/${currentDate}.pdf`,
+            S3FilePath: `${req.user.company_id}/${req.user.country_id}/${currentDate}.pdf`,
         }
-        let tags = `Action=${file.action}&Email=${file.email}&Country=${file.country}&Company=${file.company}`
+        let tags = `Action=${file.action}&Email=${file.email}&country_id=${file.country_id}&company_id=${file.company_id}`
         let newFile = new PolicyFilesSchema(file)
         let validation = newFile.validateSync()
         if (validation == null){
             logger.log("info", 'A document is being uploaded');
             await Promise.all([
-                uploadToS3(`${req.user.company}/${req.user.country}/${currentDate}.pdf`, `${currentDate}.pdf`, tags),
+                uploadToS3(`${req.user.company_id}/${req.user.country_id}/${currentDate}.pdf`, `${currentDate}.pdf`, tags),
                 newFile.save() 
             ])
         } else {

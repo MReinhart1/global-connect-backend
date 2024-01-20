@@ -9,7 +9,7 @@ const { logger }  = require("../../logger")
 
 async function validateManager(user, manager){
   let valid = false
-  let result = await UserSchema.find({occupation: "Manager", company: user.company})
+  let result = await UserSchema.find({occupation: "Manager", company_id: user.company_id})
   result.forEach((element) => {
     if (element.firstName == manager.split(" ")[0] && element.lastName == manager.split(" ")[1]) {
       valid =  true
@@ -27,8 +27,8 @@ router.post('/register', checkAuthenticated, checkAdmin, async function(req, res
     let result = await newUser.save()
     result = {
       email: result.email,
-      country: result.country,
-      company: result.company,
+      country_id: result.country_id,
+      company_id: result.company_id,
       occupation: result.occupation,
       _id: result._id
     }
@@ -55,8 +55,8 @@ router.post('/login', async function(req, res, next) {
     if (await bcrypt.compare(req.body.password, result.password)){
       result = {
         email: result.email,
-        country: result.country,
-        company: result.company,
+        country_id: result.country_id,
+        company_id: result.company_id,
         occupation: result.occupation,
         _id: result._id
       }
@@ -107,8 +107,8 @@ router.post('/getuserbyid', checkAuthenticated, async function(req, res, next) {
       logger.log("warn", `User: ${req.body._id} does not exist`);
       return res.status(200).send("No user found")
     }
-    if (result.company != req.user.company){
-      return res.status(401).send(`This user does not work at ${req.user.company}`)
+    if (result.company_id != req.user.company_id){
+      return res.status(401).send(`This user does not work at ${req.user.company_id}`)
     }
 
     result.password = ""
@@ -121,7 +121,7 @@ router.post('/getuserbyid', checkAuthenticated, async function(req, res, next) {
 
 router.get('/allusers', checkAuthenticated, checkAdmin, async function(req, res, next) {
   try {
-    let result = await UserSchema.find({company: req.user.company})
+    let result = await UserSchema.find({company_id: req.user.company_id})
     if(result === null) {
       logger.log("warn", `User does not exist`);
       return res.status(200).send("No users found")
@@ -136,7 +136,7 @@ router.get('/allusers', checkAuthenticated, checkAdmin, async function(req, res,
 
 router.get('/allmanagers', checkAuthenticated, async function(req, res, next) {
   try {
-    let result = await UserSchema.find({occupation: "Manager", company: req.user.company})
+    let result = await UserSchema.find({occupation: "Manager", company_id: req.user.company_id})
     if(result === null) {
       logger.log("warn", `Managers do not exist`);
       return res.status(200).send("No Managers found")
@@ -189,8 +189,8 @@ router.post('/token', checkAuthenticated, checkAdmin, async function(req, res, n
     let result = await UserSchema.findOne({email: req.body.email})
     result = {
       email: result.email,
-      country: result.country,
-      company: result.company,
+      country: result.country_id,
+      company: result.company_id,
       occupation: result.occupation,
       id: result._id
     }

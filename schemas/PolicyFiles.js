@@ -5,11 +5,11 @@ const PolicyFilesSchema = new mongoose.Schema({
   date: {
     type: Date
   },
-  country: {
+  country_id: {
     type: String,
     required: true
   },
-  company: {
+  company_id: {
     type: String,
     required: true
   },

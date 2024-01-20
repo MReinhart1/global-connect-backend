@@ -3,10 +3,33 @@ var router = express.Router();
 const UserSchema = require("../../schemas/user")
 const CountrySchema = require("../../schemas/countries")
 const InvitationSchema = require("../../schemas/userInvitations")
+const OrganizationSchema = require("../../schemas/OrganizationSchema")
 const bcrypt = require("bcrypt")
 const { createToken, checkAuthenticated, checkAdmin } = require("../middleware/authentication")
 const { logger } = require("../../logger")
 const { sendMail } = require('../utilities/email')
+
+// Create Organization
+router.post('/createorganization', checkAdmin, async function(req, res, next) {
+  try {
+    let result = await OrganizationSchema.create({
+      company_id: req.body.company_id,
+      country_id: req.body.country_id,
+      location_id: "",
+      email: req.body.email
+    })
+    return res.send(result)
+
+  } catch (error) {
+    if (error.code === 11000){
+      return res.send(`Organization has already been created`)
+    } else {
+      logger.log("error", error)
+      return res.send(err.message)
+    }
+  }
+
+})
 
 // invite a user to the org
 router.post('/invite', checkAdmin, async function(req, res, next) {
@@ -20,8 +43,8 @@ router.post('/invite', checkAdmin, async function(req, res, next) {
       lastName: listOfUsers[user]?.lastName || "",
       user_email: listOfUsers[user].email,
       manager_email: listOfUsers[user]?.manager || "",
-      company_id: req.user.company,
-      country_id:  req.user.country,
+      company_id: req.user.company_id,
+      country_id:  req.user.country_id,
       occupation: listOfUsers[user].occupation,
     }
     let newInviteDB = new InvitationSchema(newInvite)
@@ -35,7 +58,7 @@ router.post('/invite', checkAdmin, async function(req, res, next) {
             subject: "Global Connect Invitation",
             html: `
             <h1>Hello</h1>
-            <p> You have been signed up for Global Connect under ${req.user.company}</p>  
+            <p> You have been signed up for Global Connect under ${req.user._id}</p>  
             <p><a href="http://localhost:3005/auth/org/getinvite/${inviteId}">Click here to set up your account</a></p>
             `
         })
@@ -74,8 +97,8 @@ router.post('/acceptinvite/:inviteId', async function(req, res, next) {
       email: invite.user_email,
       mobile: invite?.mobile || req.body?.mobile || "" ,
       password: hashedPassword,
-      country: invite.country_id,
-      company: invite.company_id,
+      country_id: invite.country_id,
+      company_id: invite.company_id,
       manager: invite?.manager || req.body?.manager || "" ,
       occupation: invite.occupation,
     }
@@ -83,8 +106,8 @@ router.post('/acceptinvite/:inviteId', async function(req, res, next) {
     let result = await newUser.save()
     result = {
       email: result.email,
-      country: result.country,
-      company: result.company,
+      country: result.country_id,
+      company: result.company_id,
       occupation: result.occupation
     }
     let token = await createToken({ ...result, date: Date().now})

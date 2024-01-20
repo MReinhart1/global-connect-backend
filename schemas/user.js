@@ -25,10 +25,10 @@ const UserSchema = new mongoose.Schema({
     validation: password_validation,
     required: true
   },
-  country: {
+  country_id: {
     type: String,
   },
-  company: {
+  company_id: {
     type: String,
   },
   manager: {
