@@ -68,5 +68,9 @@ const TermSchema = new mongoose.Schema({
     }
 });
 
+TermSchema.pre(['find', 'findOne', "findOneAndDelete", "findOneAndReplace", "findOneAndUpdate"], function() {
+    this._conditions = {...this._conditions, deleted: false}
+});
+
 module.exports = mongoose.model("TermSchema", TermSchema);
 

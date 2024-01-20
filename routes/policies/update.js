@@ -29,45 +29,4 @@ router.post('/update', checkAuthenticated, async function(req, res, next) {
   res.status(200).send()
 });
 
-router.post('/bind', checkAuthenticated, async function(req, res, next) {
-  logger.log("info", `Binding the policy`);
-  let result = ""
-  try {
-      result = await PoliciesSchema.findOneAndUpdate({_id: req.body.policyId }, { status: "Binder" })
-  } catch(err) {
-    logger.log("error", `${e.message}`);
-  }
-  if(!result){
-      return res.status(200).send("No policy found")
-  }
-  if (process.env.MAILENABLED == 'true'){
-  sendMail({
-      from: process.env.EMAIL,
-      to: "michaelreinhart112@gmail.com",
-      subject: "Policy",
-      text: `${result.country_id}\n\nA Policy has been accepted for you, check it out here: http://localhost:3000/policies`,
-    })
-  }
-  res.status(200).send();
-});
-
-router.post('/reject', checkAuthenticated, async function(req, res, next) {
-    let result = ""
-    try {
-    result = await PoliciesSchema.findOneAndUpdate({_id: req.body.policyId }, { status: "Rejected" })
-    } catch(err) {logger.log("error", `${e.message}`);}
-    if(!result){
-        return res.status(200).send("No policy found")
-    }
-    if (process.env.MAILENABLED == 'true'){
-      sendMail({
-        from: process.env.EMAIL,
-        to: "michaelreinhart112@gmail.com",
-        subject: "Policy",
-        text: `A Policy has been rejected for you in ${result.country_id}, check it out here: http://localhost:3000/policies`
-      })
-    }
-    res.status(200).send();
-  });
-
 module.exports = router;

@@ -3,14 +3,14 @@ var router = express.Router();
 const UserSchema = require("../../schemas/user")
 const CountrySchema = require("../../schemas/countries")
 const InvitationSchema = require("../../schemas/userInvitations")
-const OrganizationSchema = require("../../schemas/OrganizationSchema")
+const OrganizationSchema = require("../../schemas/Organization")
 const bcrypt = require("bcrypt")
 const { createToken, checkAuthenticated, checkAdmin } = require("../middleware/authentication")
 const { logger } = require("../../logger")
 const { sendMail } = require('../utilities/email')
 
 // Create Organization
-router.post('/createorganization', checkAdmin, async function(req, res, next) {
+router.post('/createorganization', async function(req, res, next) {
   try {
     let result = await OrganizationSchema.create({
       company_id: req.body.company_id,
@@ -32,7 +32,7 @@ router.post('/createorganization', checkAdmin, async function(req, res, next) {
 })
 
 // invite a user to the org
-router.post('/invite', checkAdmin, async function(req, res, next) {
+router.post('/invite', checkAuthenticated, checkAdmin, async function(req, res, next) {
   logger.log("info", 'A user is being invited to join');
   logger.log('info', `${req.body}`)
   const listOfUsers = req.body.users
