@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const mongoose = require("mongoose");
 const UserSchema = require("../../schemas/user")
 const bcrypt = require("bcrypt")
 const { createToken, checkAuthenticated, checkAdmin} = require("../middleware/authentication")
