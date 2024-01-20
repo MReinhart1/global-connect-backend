@@ -6,16 +6,16 @@ const bcrypt = require("bcrypt")
 
 const INFORMATION = [
     {
-    company: "Berkshire",
-    country: "France"
+    company_id: "Berkshire",
+    country_id: "France"
 }, 
     {
-    company: "Marsh",
-    country: "Germany"
+    company_id: "Marsh",
+    country_id: "Germany"
 }, 
     {
-    company: "Starr",
-    country: "Spain"
+    company_id: "Starr",
+    country_id: "Spain"
 }
 ]
 
@@ -25,10 +25,10 @@ async function createUser(numUsers){
         const hashedPassword = await bcrypt.hash("Passw0rd1!", 10)
         let index = Math.floor(Math.random()*INFORMATION.length)
         let user = {
-            email:  faker.person.firstName() + faker.person.lastName() + "@" + INFORMATION[index].company + ".com",
+            email:  faker.person.firstName() + faker.person.lastName() + "@" + INFORMATION[index].company_id + ".com",
             password: hashedPassword,
-            country: INFORMATION[index].country,
-            company: INFORMATION[index].company,
+            country_id: INFORMATION[index].country_id,
+            company_id: INFORMATION[index].company_id,
             occupation: "Underwriter",
         }
         let newUser = new UserSchema(user)
@@ -48,8 +48,8 @@ async function createAdmin(){
             await UserSchema.create({
                 email:  "michaelreinhart112@gmail.com",
                 password: hashedPassword,
-                country: "France",
-                company: "Berkshire",
+                country_id: "France",
+                company_id: "Berkshire",
                 occupation: "Administrator",
             })
             logger.log("info", newUser + `\n\n\n Count: ${i}`);

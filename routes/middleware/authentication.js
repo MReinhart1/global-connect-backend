@@ -11,20 +11,21 @@ async function checkAuthenticated(req, res, next) {
   const JWToken = authHeader && authHeader.split(' ')[1]
   if (JWToken){
     jwt.verify(JWToken, "secret", (err, user) => {
-      if (err) return res.status(401).send("Not Authenticated")
+      if (err) {return res.status(401).send("User not Authenticated")}
+      req.user = user
+      next()
+    })
+  } else {
+    if(!req.cookies.token){
+      return res.status(401).send("Must login first")
+    }
+    const token = req.cookies.token
+    jwt.verify(token, "secret", (err, user) => {
+      if (err) return res.status(401).send("User not Authenticated")
       req.user = user
       next()
     })
   }
-  if(!req.cookies.token){
-    return res.status(401).send("Must login first")
-  }
-  const token = req.cookies.token
-  jwt.verify(token, "secret", (err, user) => {
-    if (err) return res.status(401).send("User not Authenticated")
-    req.user = user
-    next()
-  })
 }
 
 async function checkAdmin(req, res, next) {

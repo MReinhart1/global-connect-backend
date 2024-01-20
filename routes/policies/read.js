@@ -30,7 +30,7 @@ router.post(`/read/policy`, checkAuthenticated, async function(req, res, next) {
 router.post('/read/allpolicies', checkAuthenticated, async function(req, res, next) {
     let token = jwt.verify(req.headers.authorization.split("Bearer ")[1], "secret")
     let user = await User.findOne({email: token.email})
-    let resultsPolicies = await PoliciesSchema.find( {country_id: user.country})
+    let resultsPolicies = await PoliciesSchema.find( {country_id: user.country_id})
     resultsPolicies = resultsPolicies.filter(element => {
         if (element.creationEmail == user.email && element.policy_id === "Local"){
             return false

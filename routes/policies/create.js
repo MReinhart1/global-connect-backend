@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken')
 const { logger } = require("../../logger")
 
 async function sendEmail(element){
-    let emailUser = await User.findOne({"country": element.country_id})
+    let emailUser = await User.findOne({"country_id": element.country_id})
     if (process.env.MAILENABLED == 'true'){
         sendMail({
             from: process.env.EMAIL,

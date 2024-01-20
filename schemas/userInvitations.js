@@ -2,14 +2,22 @@ const mongoose = require("mongoose");
 
 
 const InvitationSchema = new mongoose.Schema({
+  salutation: {
+    type: String
+  },
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
   user_email: {
     type: String,
     required: true,
     unique: true
   },
-  admin_email: {
-    type: String,
-    required: true
+  manager_name: {
+    type: String
   },
   company_id: {
     type: String,

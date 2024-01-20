@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
-const { password_validation, email_validation } = require('./validations/user')
-
+const { email_validation } = require('./validations/user')
+const { country_id_validation } = require('./validations/policy')
 const OrganizationSchema = new mongoose.Schema({
   country_id: {
     type: String,
-    required: true
+    // validate: country_id_validation,
+    // required: true
   },
   location_id: {
     type: String,
@@ -13,13 +14,16 @@ const OrganizationSchema = new mongoose.Schema({
   company_id: {
     type: String,
     required: true,
+    unique: true
   },
   deleted: {
     type: Boolean, 
     default: false
   },
-  inbox: {
-    type: String
+  email: {
+    type: String,
+    required: true,
+    validate: email_validation,
   },
 }, { timestamps: true });
 
