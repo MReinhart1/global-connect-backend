@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const { password_validation, email_validation } = require('./validations/user')
 
 const UserSchema = new mongoose.Schema({
+  salutation: {
+    type: String
+  },
   firstName: {
     type: String
   },
@@ -12,7 +15,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     validation: email_validation,
     required: true,
-    unique: true
+    // unique: true
+  },
+  mobile: {
+    type: String
   },
   password: {
     type: String,
@@ -24,6 +30,9 @@ const UserSchema = new mongoose.Schema({
   },
   company: {
     type: String,
+  },
+  manager: {
+    type: String
   },
   // timestamps: true,
   occupation: {
@@ -39,3 +48,4 @@ const UserSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 module.exports = mongoose.model("UserSchema", UserSchema);
+

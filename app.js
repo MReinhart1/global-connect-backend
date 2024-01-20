@@ -22,8 +22,14 @@ const format = json({
   'response-time': ':response-time ms'
 });
 
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
 app.use(morgan(format));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cookieParser());

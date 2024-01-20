@@ -585,50 +585,6 @@ PolicySchema.paths[`policy_id.Value`].validators.push({validator: function() {
   }
 }})
 
-// Loops to assign a validation function to every element based on when it is required by
-// WIP Should not have any requirements
-// for(let index = 0; index < WIP_REQUIREMENT.length; index++){
-//   const validationFunction = function() {
-//     if (this.status_code < STATUS_CODES['WIP'] && (this[`${WIP_REQUIREMENT[index]}`].Value == "" || this[`${WIP_REQUIREMENT[index]}`].Value == undefined || this[`${WIP_REQUIREMENT[index]}`].Value == null)){
-//       throw new Error(`The ${this.policy_id.Value} policy in ${this.country_id.Value} requires a ${WIP_REQUIREMENT[index]} value to be uploaded`); 
-//     }
-//   }
-//   PolicySchema.paths[`${WIP_REQUIREMENT[index]}.Value`].validators.push({validator: validationFunction})
-// }
-
-// for(let index = 0; index < SUBMISSION_REQUIREMENT.length; index++){
-//   const validationFunction = function() {
-//     if (this.status_code == STATUS_CODES['Submission'] && (this[`${SUBMISSION_REQUIREMENT[index]}`].Value == "" || this[`${SUBMISSION_REQUIREMENT[index]}`].Value == undefined || this[`${SUBMISSION_REQUIREMENT[index]}`].Value == null)){
-//       throw new Error(`The ${this.policy_id.Value} policy in ${this.country_id.Value} requires a ${SUBMISSION_REQUIREMENT[index]} value to be a ${this.status_name}`); 
-//     }
-//   }
-//   PolicySchema.paths[`${SUBMISSION_REQUIREMENT[index]}.Value`].validators.push({validator: validationFunction})
-// }
-// for(let index = 0; index < QUOTE_REQUIREMENT.length; index++){
-//   const validationFunction = function() {
-//     if (this.status_code == STATUS_CODES['Quote'] && (this[`${QUOTE_REQUIREMENT[index]}`].Value == "" || this[`${QUOTE_REQUIREMENT[index]}`].Value == undefined || this[`${QUOTE_REQUIREMENT[index]}`].Value == null)){
-//       throw new Error(`The ${this.policy_id.Value} policy in ${this.country_id.Value} requires a ${QUOTE_REQUIREMENT[index]} value to be a ${this.status_name}`); 
-//     }
-//   }
-//   PolicySchema.paths[`${QUOTE_REQUIREMENT[index]}.Value`].validators.push({validator: validationFunction})
-// }
-// for(let index = 0; index < BIND_REQUIREMENT.length; index++){
-//   const validationFunction = function() {
-//     if (this.status_code == STATUS_CODES['Bind'] && (this[`${BIND_REQUIREMENT[index]}`].Value == "" || this[`${BIND_REQUIREMENT[index]}`].Value == undefined || this[`${BIND_REQUIREMENT[index]}`].Value == null)){
-//       throw new Error(`The ${this.policy_id.Value} policy in ${this.country_id.Value} requires a ${BIND_REQUIREMENT[index]} value to be a ${this.status_name}`); 
-//     }
-//   }
-//   PolicySchema.paths[`${BIND_REQUIREMENT[index]}.Value`].validators.push({validator: validationFunction})
-// }
-// for(let index = 0; index < POST_BIND_REQUIREMENT.length; index++){
-//   const validationFunction = function() {
-//     if (this.status_code == STATUS_CODES['Post Bind'] && (this[`${POST_BIND_REQUIREMENT[index]}`].Value == "" || this[`${POST_BIND_REQUIREMENT[index]}`].Value == undefined || this[`${POST_BIND_REQUIREMENT[index]}`].Value == null)){
-//       throw new Error(`The ${this.policy_id.Value} policy in ${this.country_id.Value} requires a ${POST_BIND_REQUIREMENT[index]} value to be a ${this.status_name}`); 
-//     }
-//   }
-//   PolicySchema.paths[`${POST_BIND_REQUIREMENT[index]}.Value`].validators.push({validator: validationFunction})
-// }
-
 PolicySchema.pre(['validate'], function() {
   if (this.status_name == "WIP"){
     this.status_code = STATUS_CODES['WIP']

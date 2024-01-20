@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const UserSchema = require("../../schemas/user")
+const CountrySchema = require("../../schemas/countries")
 const InvitationSchema = require("../../schemas/userInvitations")
 const bcrypt = require("bcrypt")
 const { createToken, checkAuthenticated, checkAdmin } = require("../middleware/authentication")
@@ -9,14 +10,16 @@ const { sendMail } = require('../utilities/email')
 
 // invite a user to the org
 router.post('/invite', checkAdmin, async function(req, res, next) {
-  // logger.log("info", 'A user is being invited to join');
-  // logger.log('info', `${req.body}`)
+  logger.log("info", 'A user is being invited to join');
+  logger.log('info', `${req.body}`)
   const listOfUsers = req.body.users
   const errorList = []
   for( let user = 0; user < listOfUsers.length; user++ ){
     let newInvite = {
+      firstName: listOfUsers[user]?.firstName || "",
+      lastName: listOfUsers[user]?.lastName || "",
       user_email: listOfUsers[user].email,
-      admin_email: req.user.email,
+      manager_email: listOfUsers[user]?.manager || "",
       company_id: req.user.company,
       country_id:  req.user.country,
       occupation: listOfUsers[user].occupation,
@@ -25,7 +28,6 @@ router.post('/invite', checkAdmin, async function(req, res, next) {
     try {
       let inviteId = await newInviteDB.save()
       inviteId = inviteId._id.toString()
-      console.log(inviteId)
       if (process.env.MAILENABLED == 'true'){
         sendMail({
             from: process.env.EMAIL,
@@ -34,16 +36,16 @@ router.post('/invite', checkAdmin, async function(req, res, next) {
             html: `
             <h1>Hello</h1>
             <p> You have been signed up for Global Connect under ${req.user.company}</p>  
-            <p><a href="http://localhost:3005/auth/org/acceptinvite/${inviteId}">Click here to set up your account</a></p>    
+            <p><a href="http://localhost:3005/auth/org/getinvite/${inviteId}">Click here to set up your account</a></p>
             `
         })
       }
-    } catch (err){
-      if (err.code === 11000){
+    } catch (error){
+      if (error.code === 11000){
         errorList.push(`${newInvite.user_email} has already been invited`)
       } else {
         logger.log("error", error)
-        return res.send(err.message)
+        return res.send(error.message)
       }
     }
   }
@@ -58,6 +60,7 @@ router.post('/invite', checkAdmin, async function(req, res, next) {
 // Body contains { "password": "<Password>" }
 router.post('/acceptinvite/:inviteId', async function(req, res, next) {
   try {
+    if (!req.body.password)return res.status(401).send("A password is required")
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
     let invite = await InvitationSchema.findById(req.params.inviteId)
     if(invite === null) {
@@ -65,13 +68,17 @@ router.post('/acceptinvite/:inviteId', async function(req, res, next) {
       return res.status(200).send("No Invitation found")
     }
     let userBody = {
-      country: invite.country_id,
-      password: hashedPassword,
+      salutation: invite?.salutation || req.body?.salutation || "",
+      firstName: invite?.firstName || req.body?.firstName || "" ,
+      lastName: invite?.lastName || req.body?.lastName || "" ,
       email: invite.user_email,
+      mobile: invite?.mobile || req.body?.mobile || "" ,
+      password: hashedPassword,
+      country: invite.country_id,
       company: invite.company_id,
+      manager: invite?.manager || req.body?.manager || "" ,
       occupation: invite.occupation,
     }
-  
     let newUser = new UserSchema(userBody)
     let result = await newUser.save()
     result = {
@@ -94,7 +101,7 @@ router.post('/acceptinvite/:inviteId', async function(req, res, next) {
 })
 
 // To get the current invitation for a user based on the _id of the invitation (can be shown on frontend when clicking email link)
-router.get('/acceptinvite/:inviteId', async function(req, res, next) {
+router.get('/getinvite/:inviteId', async function(req, res, next) {
   try {
     let user = await InvitationSchema.findById(req.params.inviteId)
     logger.log("info", `User with Id: ${req.params.inviteId} is being searched for`)
@@ -106,6 +113,16 @@ router.get('/acceptinvite/:inviteId', async function(req, res, next) {
       logger.log("error", error)
       return res.send(err.message)
     }
+  }
+})
+
+router.get('/getcountries', async function(req, res, next) {
+  try {
+    let countries = await CountrySchema.find().select({ name: 1, _id: 0 })
+    return res.send(countries)
+  } catch (error) {
+    logger.log("error", error)
+    return res.send(error.message)
   }
 })
 
