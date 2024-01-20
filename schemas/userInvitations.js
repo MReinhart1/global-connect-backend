@@ -39,5 +39,8 @@ const InvitationSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+InvitationSchema.pre(['find', 'findOne', "findOneAndDelete", "findOneAndReplace", "findOneAndUpdate"], function() {
+  this._conditions = {...this._conditions, deleted: false}
+});
 
 module.exports = mongoose.model("InvitationSchema", InvitationSchema);

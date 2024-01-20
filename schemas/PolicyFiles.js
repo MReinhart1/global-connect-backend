@@ -55,6 +55,12 @@ const PolicyFilesSchema = new mongoose.Schema({
 PolicyFilesSchema.index({globalPolicyID: 1})
 PolicyFilesSchema.index({policy_id: 1})
 
+
+PolicyFilesSchema.pre(['find', 'findOne', "findOneAndDelete", "findOneAndReplace", "findOneAndUpdate"], function() {
+  this._conditions = {...this._conditions, deleted: false}
+});
+
+
 module.exports = mongoose.model("PolicyFilesSchema", PolicyFilesSchema);
 
  

@@ -585,6 +585,11 @@ PolicySchema.paths[`policy_id.Value`].validators.push({validator: function() {
   }
 }})
 
+PolicySchema.pre(['find', 'findOne', "findOneAndDelete", "findOneAndReplace", "findOneAndUpdate"], function() {
+  this._conditions = {...this._conditions, deleted: false}
+});
+
+
 PolicySchema.pre(['validate'], function() {
   if (this.status_name == "WIP"){
     this.status_code = STATUS_CODES['WIP']

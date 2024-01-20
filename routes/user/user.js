@@ -133,7 +133,7 @@ router.get('/allusers', checkAuthenticated, checkAdmin, async function(req, res,
   }
 })
 
-router.get('/allmanagers', checkAuthenticated, async function(req, res, next) {
+router.get('/allmanagers', checkAuthenticated, checkAdmin, async function(req, res, next) {
   try {
     let result = await UserSchema.find({occupation: "Manager", company_id: req.user.company_id})
     if(result === null) {
@@ -188,13 +188,27 @@ router.post('/token', checkAuthenticated, checkAdmin, async function(req, res, n
     let result = await UserSchema.findOne({email: req.body.email})
     result = {
       email: result.email,
-      country: result.country_id,
-      company: result.company_id,
+      country_id: result.country_id,
+      company_id: result.company_id,
       occupation: result.occupation,
       id: result._id
     }
     let token = await createToken({ ...result, date: Date().now}, "30d")
     return res.status(200).send({token})
+  } catch (error) {
+    logger.log("error", error)
+    return res.send("Unexpected Error")
+  }
+})
+
+router.post('/deleteuser', checkAuthenticated, async function(req, res, next) {
+  try {
+      let result = await UserSchema.findByIdAndUpdate(req.body._id, {deleted: true})
+      if(result === null) {
+        logger.log("warn", `User does not exist`);
+        return res.status(200).send("No users found")
+      }
+      return res.send("User has been deleted")
   } catch (error) {
     logger.log("error", error)
     return res.send("Unexpected Error")

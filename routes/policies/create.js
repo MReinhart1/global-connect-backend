@@ -65,7 +65,11 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
         }
         let errorList = await ValidatePolicyList(PolicyList)
         if (errorList.length == 0){
-            PolicySchema.create(PolicyList)
+            if (req.body?.dryRun && req.body.dryRun == true){
+                return res.send("Policy is Valid")
+            } else {
+                PolicySchema.create(PolicyList)
+            }
         } else {
             return res.status(200).send(errorList)
         }

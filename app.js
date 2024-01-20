@@ -45,8 +45,8 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
 });
 
 // Routes
-var usersRouter = require('./routes/userActions/user');
-var orgRouter = require('./routes/userActions/organization');
+var usersRouter = require('./routes/user/user');
+var orgRouter = require('./routes/user/organization');
 var policiesCreateRouter = require('./routes/policies/create');
 var policiesReadRouter = require('./routes/policies/read');
 var policiesUpdateRouter = require('./routes/policies/update');

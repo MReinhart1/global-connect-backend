@@ -47,5 +47,10 @@ const UserSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
+
+UserSchema.pre(['find', 'findOne', "findOneAndDelete", "findOneAndReplace", "findOneAndUpdate"], function() {
+  this._conditions = {...this._conditions, deleted: false}
+});
+
 module.exports = mongoose.model("UserSchema", UserSchema);
 

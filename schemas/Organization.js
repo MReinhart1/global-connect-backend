@@ -29,4 +29,8 @@ const OrganizationSchema = new mongoose.Schema({
 
 OrganizationSchema.index({country_id: 1, company_id: 1}, {unique: true})
 
+OrganizationSchema.pre(['find', 'findOne', "findOneAndDelete", "findOneAndReplace", "findOneAndUpdate"], function() {
+  this._conditions = {...this._conditions, deleted: false}
+});
+
 module.exports = mongoose.model("OrganizationSchema", OrganizationSchema);
