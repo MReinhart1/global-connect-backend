@@ -1,6 +1,20 @@
 const mongoose = require("mongoose");
 const { password_validation, email_validation } = require('./validations/user')
 
+
+const CommentsSchema =  new mongoose.Schema({
+  email: {
+    type: String
+  },
+  message: {
+    type: String
+  },
+  date: {
+    type: Date,
+    default: Date.now
+  }
+})
+
 const PolicyFilesSchema = new mongoose.Schema({
   date: {
     type: Date
@@ -35,8 +49,8 @@ const PolicyFilesSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  comment: {
-    type: String
+  comments : {
+    type: [CommentsSchema]
   },
   globalPolicyID: {
     type: String,

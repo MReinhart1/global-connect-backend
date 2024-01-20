@@ -27,20 +27,28 @@ var storage = multer.diskStorage(
 
 const upload = multer({ dest: "./", storage: storage })
 
-router.get(`/getallpolicyfiles`,  checkAuthenticated, async function(req, res, next) {
+router.post(`/getprogramfiles`,  checkAuthenticated, async function(req, res, next) {
     try {
-        let allDocuments = await PolicyFilesSchema.find({country_id: req.user.country_id, company_id: req.user.company_id})
-        return res.send(allDocuments) 
+        let result = await PolicyFilesSchema.find({globalPolicyID: req.body.globalPolicyID})
+        if(result === null) {
+            logger.log("warn", `Files do not exist`);
+            return res.status(200).send("No files found")
+        }
+        return res.send(result)
     } catch (error) {
         logger.log("error", error)
         return res.send("Unexpected Error")
     }
 });
 
-router.post(`/getfiles`,  checkAuthenticated, async function(req, res, next) {
+router.post(`/getpolicyfiles`,  checkAuthenticated, async function(req, res, next) {
     try {
-        let allDocuments = await PolicyFilesSchema.find({policy_id: req.body.policy_id})
-        return res.send(allDocuments) 
+        let result = await PolicyFilesSchema.find({policy_id: req.body.policy_id, })
+        if(result === null) {
+            logger.log("warn", `Files do not exist`);
+            return res.status(200).send("No files found")
+        }
+        return res.send(result)
     } catch (error) {
         logger.log("error", error)
         return res.send("Unexpected Error")
@@ -56,11 +64,11 @@ router.post(`/upload`,  checkAuthenticated, upload.single('letter'), async funct
             country_id: req.user.country_id,
             company_id: req.user.company_id,
             email: req.user.email,
+            globalPolicyID: req.body.globalPolicyID,
             policy_id: req.body.policy_id,
             effective_dt: req.body.effective_dt,
             action: req.body.action,
             value: req.body.value,
-            globalPolicyID: req.body.globalPolicyID,
             S3FilePath: `${req.user.company_id}/${country_id}/${currentDate}.${mimetype}`,
         }
         let tags = `Action=${file.action}&Email=${file.email}&country_id=${file.country_id}&company_id=${file.company_id}`
@@ -85,8 +93,16 @@ router.post(`/upload`,  checkAuthenticated, upload.single('letter'), async funct
 
 router.post(`/addcomment`,  checkAuthenticated, async function(req, res, next) {
     try {
-        await PolicyFilesSchema.findByIdAndUpdate({_id: req.body.policyID}, {comment: req.body.comment})
-        return res.send(200)
+        const comment = {
+            email: req.user.email,
+            message: req.body.message,
+        }
+        let result = await PolicyFilesSchema.findByIdAndUpdate({_id: req.body._id}, { $push: { comments: comment } })
+        if(result === null) {
+            logger.log("warn", `Files do not exist`);
+            return res.status(200).send("No files found")
+        }
+        return res.status(200)
     } catch (error) {
         logger.log("error", error)
         return res.send("Unexpected Error")
