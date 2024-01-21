@@ -1,4 +1,6 @@
-{
+const PROGRAM_ONE = {
+  "email": "michaelreinhart112@gmail.com",
+  "status": "WIP",
   "Policies": [
     {
       "submission_txt": "",
@@ -326,3 +328,6 @@
     }
   ]
 }
+
+    
+module.exports = PROGRAM_ONE

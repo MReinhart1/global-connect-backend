@@ -1,4 +1,3 @@
-const { faker } = require('@faker-js/faker');
 const mongoose = require('mongoose');
 const OrganizationSchema = require("../../schemas/Organization")
 require('dotenv').config({path:__dirname+'/../../.env'})

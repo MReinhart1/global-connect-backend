@@ -1,4 +1,3 @@
-const { faker } = require('@faker-js/faker');
 const mongoose = require('mongoose');
 const UserSchema = require("../../schemas/user")
 require('dotenv').config({path:__dirname+'/../../.env'})
@@ -437,8 +436,8 @@ async function createUsers(){
     occupation: "Manager",
     manager: "",
     })
-    console.log("Done")
     mongoose.disconnect()
+    console.log("Done")
 }
 
 createUsers()
