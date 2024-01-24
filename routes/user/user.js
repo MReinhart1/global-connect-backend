@@ -156,6 +156,7 @@ router.post('/updateuser', checkAuthenticated, async function(req, res, next) {
         logger.log("warn", `User does not exist`);
         return res.status(200).send("No users found")
       }
+      result.password = ""
       return res.send({...result._doc, ...req.body.user})
     } else {
       return res.send("User is not authorized to update this field").status(401)
