@@ -4,8 +4,7 @@ const PolicySchema = require("../../schemas/Policies")
 const TermSchema = require("../../schemas/Terms")
 const ExposureSchema = require("../../schemas/Exposures")
 const User = require('../../schemas/user')
-const { getFromS3 } = require('../../cloudResources/S3')
-const { checkAuthenticated, checkNotAuthenticated } = require("../middleware/authentication");
+const { checkAuthenticated } = require("../middleware/authentication");
 const { sendMail } = require('../utilities/email')
 const jwt = require('jsonwebtoken')
 const { logger } = require("../../logger")
@@ -35,7 +34,7 @@ router.post('/create', checkAuthenticated, async function(req, res, next) {
             });
             newPolicy['globalPolicyID'] = uuid
             newPolicy['creationEmail'] = token.email
-            newPolicy['status_name'] = "Post Bind"
+            newPolicy['status_name'] = "WIP"
 
             // Terms
             for(let termsIndex = 0; termsIndex < req.body.Terms.length; termsIndex++){

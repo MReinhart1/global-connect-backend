@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const PoliciesSchema = require("../../schemas/Policies")
-const TermsSchema = require("../../schemas/Terms")
-const ExposuresSchema = require("../../schemas/Exposures")
-const { getFromS3 } = require('../../cloudResources/S3')
-const { checkAuthenticated } = require("../middleware/authentication");
-const { sendMail } = require('../utilities/email')
+const PoliciesSchema = require("../../../schemas/Policies")
+const TermsSchema = require("../../../schemas/Terms")
+const ExposuresSchema = require("../../../schemas/Exposures")
+const { getFromS3 } = require('../../../cloudResources/S3')
+const { checkAuthenticated } = require("../../middleware/authentication");
+const { sendMail } = require('../../utilities/email')
 
 router.post('/bind', checkAuthenticated, async function(req, res, next) {
   logger.log("info", `Binding the policy`);

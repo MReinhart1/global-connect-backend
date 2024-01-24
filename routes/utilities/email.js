@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer")
 const { logger } = require("../../logger")
+require('dotenv').config({path:'../../.env'})
 
 const transporter = nodemailer.createTransport({
     service: "outlook",

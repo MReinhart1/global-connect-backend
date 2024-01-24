@@ -49,7 +49,9 @@ var usersRouter = require('./routes/user/user');
 var orgRouter = require('./routes/user/organization');
 var policiesCreateRouter = require('./routes/policies/create');
 var policiesReadRouter = require('./routes/policies/read');
-var policiesUpdateRouter = require('./routes/policies/update');
+var policiesUpdateRouter = require('./routes/policies/updates/update-policy');
+var policiesUpdateStatusRouter = require('./routes/policies/updates/update-status');
+var policiesUpsetRequestRouter = require('./routes/policies/updates/upsert-request');
 var filesRouter = require('./routes/files/upload');
 var reportRouter = require('./routes/reports/index');
 
@@ -58,6 +60,8 @@ app.use('/auth/org', orgRouter);
 app.use('/policies', policiesCreateRouter);
 app.use('/policies', policiesReadRouter);
 app.use('/policies', policiesUpdateRouter);
+app.use('/policies', policiesUpdateStatusRouter);
+app.use('/policies', policiesUpsetRequestRouter);
 app.use('/files', filesRouter);
 app.use('/report', reportRouter);
 

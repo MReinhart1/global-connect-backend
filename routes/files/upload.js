@@ -65,7 +65,7 @@ router.post(`/upload`,  checkAuthenticated, upload.single('letter'), async funct
             company_id: req.user.company_id,
             email: req.user.email,
             globalPolicyID: req.body.globalPolicyID,
-            policy_id: req.body.policy_id,
+            policy_txt: req.body.policy_txt,
             effective_dt: req.body.effective_dt,
             action: req.body.action,
             value: req.body.value,

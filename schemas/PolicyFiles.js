@@ -32,7 +32,7 @@ const PolicyFilesSchema = new mongoose.Schema({
     validation: email_validation,
     required: true,
   },
-  policy_id: {
+  policy_txt: {
     type: String,
     required: true
   },
@@ -67,7 +67,7 @@ const PolicyFilesSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 PolicyFilesSchema.index({globalPolicyID: 1})
-PolicyFilesSchema.index({policy_id: 1})
+PolicyFilesSchema.index({policy_txt: 1})
 
 
 PolicyFilesSchema.pre(['find', 'findOne', "findOneAndDelete", "findOneAndReplace", "findOneAndUpdate"], function() {

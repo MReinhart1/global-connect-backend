@@ -10,35 +10,46 @@ const { sendMail } = require('../utilities/email');
 const { STATES } = require('mongoose');
 const jwt = require('jsonwebtoken')
 
-// Routes 
-// Get all policies for your company or that are for your country 
-// Get your master policy by GlobalID
-// Get terms and exposures by globalID for your master policy
-// Get terms and exposures for other companies local policy 
+// This is primarily for the work queue
+// Client", "Broker", "Auditor", "Underwriter", "Manager", "Administrator"
+router.get('/read/allpolicies', checkAuthenticated, async function(req, res, next) {
+    const ClientSearchCriteria = {policy_id: "local"}
+    const BrokerSearchCriteria = {policy_id: "local"}
+    const AuditorSearchCriteria = {policy_id: "local"}
 
-router.post(`/read/policy`, checkAuthenticated, async function(req, res, next) {
-    let policy = await  PoliciesSchema.findOne({_id: req.body.policyId })
-    if (policy.policy_id == "Local"){
-        return res.send({policies: [policy]})
-    } else {
-        policy = await PoliciesSchema.find({globalPolicyID: policy.globalPolicyID })
-        return res.send({policies: policy })
+    // All master and local policies for a program where this underwriter is underwriting the master
+    // All local policies where this user is the underwriter
+    const UnderwriterSearchCriteria = {policy_id: "local"}
+
+    // All policies from the underwriters that the manager manages
+    const ManagerSearchCriteria = {policy_id: "local"}
+
+    // All Local policies that are underwritten by the organization
+    // All Master policies produced by the organization
+    // All local policies produced by a master policy from the organization
+    const AdministratorSearchCriteria = {policy_id: "local"}
+    if (req.user.occupation == "Client"){
+        let policyList = await PoliciesSchema.find({carrier_id: req.user.company_id})
+
     }
+    if (req.user.occupation == "Administrator"){
+        let policyList = await PoliciesSchema.find({carrier_id: req.user.company_id})
+        // for each companyPolicy if the policy_id is master get all the localo ones as well
+    }
+    let policyList = await PoliciesSchema.find()
+    return res.send(policyList)
+
 });
 
+// Mostly for the program snapshot page
+// Return a list of programs with their status and location
+router.post('/read/programstatus', checkAuthenticated, async function(req, res, next) {
 
-router.post('/read/allpolicies', checkAuthenticated, async function(req, res, next) {
-    let token = jwt.verify(req.headers.authorization.split("Bearer ")[1], "secret")
-    let user = await User.findOne({email: token.email})
-    let resultsPolicies = await PoliciesSchema.find( {country_id: user.country_id})
-    resultsPolicies = resultsPolicies.filter(element => {
-        if (element.creationEmail == user.email && element.policy_id === "Local"){
-            return false
-        } else {
-            return true
-        }
-    })
-    res.json(resultsPolicies);
+});
+
+// For the program details page, return every policy based on the globalProgramID
+router.post('/read/program', checkAuthenticated, async function(req, res, next) {
+
 });
 
 
